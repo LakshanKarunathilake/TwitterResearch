@@ -81,4 +81,6 @@
     <plugin name="cordova-plugin-splashscreen" spec="5.0.2" />
     <plugin name="cordova-plugin-ionic-webview" spec="1.1.19" />
     <plugin name="cordova-plugin-ionic-keyboard" spec="2.0.5" />
+    <preference name="TwitterConsumerKey" value="	Z2meYTIOoAtbXlNEt4o46w1tW" />
+    <preference name="TwitterConsumerSecret" value="Jx664eXW0IOeiflGfiX5cLk6dRUFfAAfQbBqCXXYb0nyg0EjxZ" />
 </widget>

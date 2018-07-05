@@ -5,21 +5,35 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
 
 import { MyApp } from './app.component';
-import { HomePage } from '../pages/home/home';
+import { AngularFireModule } from 'angularfire2';
+import { AngularFireAuthModule } from 'angularfire2/auth';
+import {AngularFireDatabaseModule} from 'angularfire2/database';
+
+const config = {
+  apiKey: "AIzaSyDN1yPRK2n2Sc9yTJk88G9RmU1O8H-_xpk",
+  authDomain: "facebookresearch-cd2a1.firebaseapp.com",
+  databaseURL: "https://facebookresearch-cd2a1.firebaseio.com",
+  projectId: "facebookresearch-cd2a1",
+  storageBucket: "facebookresearch-cd2a1.appspot.com",
+  messagingSenderId: "699207289274"
+};
 
 @NgModule({
   declarations: [
-    MyApp,
-    HomePage
+    MyApp
   ],
   imports: [
     BrowserModule,
-    IonicModule.forRoot(MyApp)
+    IonicModule.forRoot(MyApp),
+    AngularFireAuthModule,
+    AngularFireModule.initializeApp(config),
+    AngularFireDatabaseModule
+    
+
   ],
   bootstrap: [IonicApp],
   entryComponents: [
-    MyApp,
-    HomePage
+    MyApp
   ],
   providers: [
     StatusBar,
