@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { AngularFireDatabase } from 'angularfire2/database';
-import { Observable } from 'rxjs'
+import {Observable} from 'rxjs/observable' 
 
 /**
  * Generated class for the DataAddPage page.
@@ -17,19 +17,22 @@ import { Observable } from 'rxjs'
 })
 export class DataAddPage {
 
-  items: Observable<any>;
+  items: Observable<any[]>;
   itemsArr = [];
   itemValue;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,private fdb:AngularFireDatabase) {
-    this.items = fdb.object('items').valueChanges();
-    
-    this.items.subscribe(res=>{
-       this.itemsArr = res.name;
-      // this.itemsArr.push(res);
-      // console.log(this.itemsArr);
-      // console.log(this.itemsArr.length);
-    })
+    this.items = fdb.list('/items/').snapshotChanges();
+    console.log(this.items);
+    // this.items.forEach(element => {
+    //   console.log(element);
+    //   for(let i =0;i<element.length;i++){
+    //     this.itemsArr.push({
+    //       name:element[i].name
+    //     })
+    //   }
+      
+    // })
    
     
   }
