@@ -18,23 +18,12 @@ import {Observable} from 'rxjs/observable'
 export class DataAddPage {
 
   items: Observable<any[]>;
-  itemsArr = [];
   itemValue;
+  
 
   constructor(public navCtrl: NavController, public navParams: NavParams,private fdb:AngularFireDatabase) {
-    this.items = fdb.list('/items/').snapshotChanges();
-    console.log(this.items);
-    // this.items.forEach(element => {
-    //   console.log(element);
-    //   for(let i =0;i<element.length;i++){
-    //     this.itemsArr.push({
-    //       name:element[i].name
-    //     })
-    //   }
-      
-    // })
-   
-    
+    this.items = fdb.list('/items/').valueChanges();    
+    console.log('items',this.items);
   }
 
  AddToDB(){

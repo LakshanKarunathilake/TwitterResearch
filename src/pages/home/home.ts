@@ -32,7 +32,7 @@ export class HomePage {
     .then(res =>{
       console.log('Form-Google---');
       console.log(res);
-      this.navCtrl.push('DataAddPage');
+      this.navCtrl.setRoot('SearchPage');
     });
     
   }
