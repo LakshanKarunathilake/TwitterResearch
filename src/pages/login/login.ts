@@ -63,10 +63,10 @@ export class LoginPage {
 
   async clickLogin(user: User){
     try{
-      const result =  this.afAuth.auth.signInWithEmailAndPassword(user.email,user.password)
+      const result = await  this.afAuth.auth.signInWithEmailAndPassword(user.email,user.password)
       .then(()=>{
         this.alertCtrl.create({
-          message : `Login Success <br><br> <img src="../assets/imgs/done_icon.png" width="40px" height="40px">`,
+          message : `Login Success <br><br> <img src="assets/imgs/done_icon.png" width="40px" height="40px">`,
           buttons: ['Dismiss'],          
         }).present();        
         this.presentActionSheet();
@@ -74,7 +74,9 @@ export class LoginPage {
       console.log(result);
     }catch(e){
       this.alertCtrl.create({
-        message : e.message+'<br><br><img src="../assets/imgs/failure_icon.png" weight="50px" height="50px">',
+        message : e.message+`<br><br>
+        <div align="center"> <img src="assets/imgs/failure_icon.png" weight="50px" height="50px"></div>
+       `,
         buttons: ['Dismiss']
       }).present()
       console.error(e);

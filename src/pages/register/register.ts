@@ -27,14 +27,17 @@ export class RegisterPage {
       const result = await this.faAuth.auth.createUserWithEmailAndPassword(user.email,user.password)
       .then(()=>{
         this.alertCtrl.create({
-          message : `Registration Success<br><br> <img src="../assets/imgs/done_icon.png" width="40px" height="40px">`,
+          message : `Registration Success<br><br> <img src="assets/imgs/done_icon.png" width="40px" height="40px">`,
           buttons: ['Dismiss']
         }).present();
       })
       console.log(result);
     }catch(e){
       this.alertCtrl.create({
-        message : e.message+'<br><br><img src="../assets/imgs/failure_icon.png" weight="50px" height="50px">',
+        message : e.message+`
+                <br><br>
+                <div><img src="assets/imgs/failure_icon.png" weight="50px" height="50px"></div>
+                `,
         buttons: ['Dismiss']
       }).present()
       console.error(e);
