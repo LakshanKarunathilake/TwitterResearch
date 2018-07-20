@@ -9,13 +9,15 @@ import { AngularFireModule } from 'angularfire2';
 import { AngularFireAuthModule } from 'angularfire2/auth';
 import {AngularFireDatabaseModule} from 'angularfire2/database';
 
+
+
 const config = {
-  apiKey: "AIzaSyDN1yPRK2n2Sc9yTJk88G9RmU1O8H-_xpk",
-  authDomain: "facebookresearch-cd2a1.firebaseapp.com",
-  databaseURL: "https://facebookresearch-cd2a1.firebaseio.com",
-  projectId: "facebookresearch-cd2a1",
-  storageBucket: "facebookresearch-cd2a1.appspot.com",
-  messagingSenderId: "699207289274"
+  apiKey: "AIzaSyAKLUv0xBR1lOzKBY3gKwpk0tgb8p4Nkjk",
+  authDomain: "trys-f5791.firebaseapp.com",
+  databaseURL: "https://trys-f5791.firebaseio.com",
+  projectId: "trys-f5791",
+  storageBucket: "trys-f5791.appspot.com",
+  messagingSenderId: "658398808601"
 };
 
 @NgModule({

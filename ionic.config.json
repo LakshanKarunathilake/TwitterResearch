@@ -1,6 +1,6 @@
 {
   "name": "FaceBookReview",
-  "app_id": "",
+  "app_id": "45c623af",
   "type": "ionic-angular",
   "integrations": {
     "cordova": {}

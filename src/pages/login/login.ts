@@ -1,5 +1,8 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams,ActionSheetController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams,ActionSheetController, AlertController } from 'ionic-angular';
+import { User } from '../../models/User';
+
+import { AngularFireAuth} from 'angularfire2/auth';
 
 
 
@@ -17,7 +20,10 @@ import { IonicPage, NavController, NavParams,ActionSheetController } from 'ionic
 })
 export class LoginPage {
 
-  constructor(private navCtrl: NavController, public navParams: NavParams,private actControl:ActionSheetController) {
+  user = {} as User;
+
+  constructor(private navCtrl: NavController, public navParams: NavParams,private actControl:ActionSheetController,private afAuth:AngularFireAuth
+  ,private alertCtrl: AlertController) {
   }
   
 
@@ -48,15 +54,33 @@ export class LoginPage {
   }
 
   moveToSignupPage(){
-    this.navCtrl.push("SignupPage");
+    this.navCtrl.push("RegisterPage");
   }
   
   moveToHomePage(){
     this.navCtrl.push("HomePage");
   }
 
-  clickLogin(){
-    this.presentActionSheet();
+  async clickLogin(user: User){
+    try{
+      const result =  this.afAuth.auth.signInWithEmailAndPassword(user.email,user.password)
+      .then(()=>{
+        this.alertCtrl.create({
+          message : `Login Success <br><br> <img src="../assets/imgs/done_icon.png" width="40px" height="40px">`,
+          buttons: ['Dismiss'],          
+        }).present();        
+        this.presentActionSheet();
+      });
+      console.log(result);
+    }catch(e){
+      this.alertCtrl.create({
+        message : e.message+'<br><br><img src="../assets/imgs/failure_icon.png" weight="50px" height="50px">',
+        buttons: ['Dismiss']
+      }).present()
+      console.error(e);
+    }
+   
+    
   }
 
 }
