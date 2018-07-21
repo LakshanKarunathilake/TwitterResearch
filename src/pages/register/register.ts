@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, AlertController, Loading, LoadingController} from 'ionic-angular';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { User } from '../../models/User';
 
@@ -18,14 +18,20 @@ import { User } from '../../models/User';
 export class RegisterPage {
 
   user = {} as User;
+  loading:Loading;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams,private faAuth:AngularFireAuth,private alertCtrl:AlertController) {
+  constructor(public navCtrl: NavController, public navParams: NavParams,private faAuth:AngularFireAuth,private alertCtrl:AlertController,private loadingCtrl:LoadingController) {
+    this.loading = this.loadingCtrl.create({
+      content: 'Please wait while registering..'
+    });
   }
 
   async registerUser(user:User){
     try{
+      this.loading.present();
       const result = await this.faAuth.auth.createUserWithEmailAndPassword(user.email,user.password)
       .then(()=>{
+        this.loading.dismiss();
         this.alertCtrl.create({
           message : `Registration Success<br><br> <img src="assets/imgs/done_icon.png" width="40px" height="40px">`,
           buttons: ['Dismiss']
@@ -33,6 +39,7 @@ export class RegisterPage {
       })
       console.log(result);
     }catch(e){
+      this.loading.dismiss();
       this.alertCtrl.create({
         message : e.message+`
                 <br><br>

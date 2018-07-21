@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams,ActionSheetController, AlertController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams,ActionSheetController, AlertController,Loading,LoadingController } from 'ionic-angular';
 import { User } from '../../models/User';
 
 import { AngularFireAuth} from 'angularfire2/auth';
@@ -21,9 +21,18 @@ import { AngularFireAuth} from 'angularfire2/auth';
 export class LoginPage {
 
   user = {} as User;
+  loading: Loading;
 
   constructor(private navCtrl: NavController, public navParams: NavParams,private actControl:ActionSheetController,private afAuth:AngularFireAuth
-  ,private alertCtrl: AlertController) {
+  ,private alertCtrl: AlertController,private loadingCtrl:LoadingController) {
+    
+  }
+
+  presentLoading(){
+    this.loading = this.loadingCtrl.create({
+      content: 'Please wait tille loads'
+    });
+    this.loading.present();
   }
   
 
@@ -34,7 +43,8 @@ export class LoginPage {
         {
           text: 'Yes',          
           handler: () => {
-            this.moveToHomePage();
+            // this.moveToHomePage();
+            this.navCtrl.push('MainMenuPage');
           }
         },{
           text: 'No',
@@ -58,21 +68,26 @@ export class LoginPage {
   }
   
   moveToHomePage(){
-    this.navCtrl.setRoot("SearchPage");
+    this.navCtrl.push("MainMenuPage");
   }
 
   async clickLogin(user: User){
+    this.presentLoading();
     try{
       const result = await  this.afAuth.auth.signInWithEmailAndPassword(user.email,user.password)
       .then(()=>{
-        this.alertCtrl.create({
-          message : `Login Success <br><br> <img src="assets/imgs/done_icon.png" width="40px" height="40px">`,
-          buttons: ['Dismiss'],          
-        }).present();        
+        this.loading.dismiss();        
+          
+        // this.alertCtrl.create({
+        //   message : `Login Success <br><br> <img src="assets/imgs/done_icon.png" width="40px" height="40px">`,
+        //   buttons: ['Dismiss'],          
+        // }).present();        
         this.presentActionSheet();
       });
       console.log(result);
     }catch(e){
+      this.loading.dismiss();
+      
       this.alertCtrl.create({
         message : e.message+`<br><br>
         <div align="center"> <img src="assets/imgs/failure_icon.png" weight="50px" height="50px"></div>
