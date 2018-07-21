@@ -58,7 +58,7 @@ export class LoginPage {
   }
   
   moveToHomePage(){
-    this.navCtrl.push("HomePage");
+    this.navCtrl.setRoot("SearchPage");
   }
 
   async clickLogin(user: User){
