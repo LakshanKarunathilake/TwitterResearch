@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
-
+import { HttpClient} from '@angular/common/http';
 /**
  * Generated class for the SearchPage page.
  *
@@ -18,11 +18,34 @@ export class SearchPage {
   tab2Root = 'ReportsPage';
   myIndex: number;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  posts: any;
+
+  private url = 'https://slitt-research-se.appspot.com/twitter_users/salman';
+
+  constructor(public navCtrl: NavController, public navParams: NavParams,private http:HttpClient) {
+    
+    // http.get(this.url)
+    // .subscribe(response => {
+    //   this.posts = response.json();      
+    // });
+
   }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad SearchPage');
+  searchTwitterProfiles(input: HTMLInputElement){
+    this.posts = this.http.get(this.url);
+    console.log(this.posts);
   }
+
+  // createPost(input: HTMLInputElement){
+  //   let post:any = {
+  //     title : input.value
+  //   }
+  //   this.http.post(this.url,JSON.stringify(post))
+  //   .subscribe(res=>{
+  //     post.id = res.json().id;
+  //     this.posts.splice(0,0,post);
+
+  //   })
+  // }
 
 }

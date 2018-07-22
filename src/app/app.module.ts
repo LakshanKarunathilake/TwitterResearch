@@ -7,7 +7,8 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { MyApp } from './app.component';
 import { AngularFireModule } from 'angularfire2';
 import { AngularFireAuthModule } from 'angularfire2/auth';
-import {AngularFireDatabaseModule} from 'angularfire2/database';
+import { AngularFireDatabaseModule} from 'angularfire2/database';
+import { HttpClientModule} from '@angular/common/http'
 
 
 
@@ -29,8 +30,8 @@ const config = {
     IonicModule.forRoot(MyApp),
     AngularFireAuthModule,
     AngularFireModule.initializeApp(config),
-    AngularFireDatabaseModule
-    
+    AngularFireDatabaseModule,
+    HttpClientModule
 
   ],
   bootstrap: [IonicApp],
