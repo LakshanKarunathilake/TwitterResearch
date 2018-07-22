@@ -20,7 +20,7 @@ export class SearchPage {
 
   posts: any;
 
-  private url = 'https://slitt-research-se.appspot.com/twitter_users/salman';
+  private url = '/api';
 
   constructor(public navCtrl: NavController, public navParams: NavParams,private http:HttpClient) {
     
@@ -31,8 +31,9 @@ export class SearchPage {
 
   }
 
-  searchTwitterProfiles(input: HTMLInputElement){
-    this.posts = this.http.get(this.url);
+  searchTwitterProfiles(input: string){
+    // let val:string = JSON.stringify(input);
+    this.posts = this.http.get((this.url)+"/twitter_users/"+input);
     console.log(this.posts);
   }
 

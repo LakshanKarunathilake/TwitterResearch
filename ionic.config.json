@@ -1,12 +1,12 @@
 {
-  "name": "proxy-example",
-  "app_id": "",
   "proxies": [
     {
       "path": "/api",
-      "proxyUrl": "http://cors.api.com/api"
+      "proxyUrl": "https://slitt-research-se.appspot.com/"
     }
   ],
+  "name": "",
+  "app_id": "",
   "integrations": {},
   "type": "ionic-angular"
 }
