@@ -47,7 +47,7 @@ export class SearchPage {
     this.presentLoading();
 
     if(this._platform.is("cordova")){      
-      this.url = "https://slitt-research-se.appspot.com/";
+      this.url = "https://slitt-research-se.appspot.com";
     }
 
     try{
@@ -84,6 +84,10 @@ export class SearchPage {
 
   //   })
   // }
+
+  viewPage(user: TwitterUser){
+    this.navCtrl.push('TwitterViewPage',user);
+  }
 
   presentLoading(){
     this.loading = this.loadingCtrl.create({

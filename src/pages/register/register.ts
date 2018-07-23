@@ -27,29 +27,53 @@ export class RegisterPage {
   }
 
   async registerUser(user:User){
-    try{
-      this.loading.present();
-      const result = await this.faAuth.auth.createUserWithEmailAndPassword(user.email,user.password)
-      .then(()=>{
+    if(this.validatePassword()){
+      try{
+        this.loading.present();
+        const result = await this.faAuth.auth.createUserWithEmailAndPassword(user.email,user.password)
+        .then(()=>{
+          this.loading.dismiss();
+          this.alertCtrl.create({
+            message : `Registration Success<br><br> <img src="assets/imgs/done_icon.png" width="40px" height="40px">`,
+            buttons: ['Dismiss']
+          }).present();
+          this.navCtrl.push('LoginPage');
+        })
+        console.log(result);
+      }catch(e){
         this.loading.dismiss();
         this.alertCtrl.create({
-          message : `Registration Success<br><br> <img src="assets/imgs/done_icon.png" width="40px" height="40px">`,
+          message : e.message+`
+                  <br><br>
+                  <div><img src="assets/imgs/failure_icon.png" weight="50px" height="50px"></div>
+                  `,
           buttons: ['Dismiss']
-        }).present();
-      })
-      console.log(result);
-    }catch(e){
-      this.loading.dismiss();
-      this.alertCtrl.create({
-        message : e.message+`
-                <br><br>
-                <div><img src="assets/imgs/failure_icon.png" weight="50px" height="50px"></div>
-                `,
-        buttons: ['Dismiss']
-      }).present()
-      console.error(e);
-    }
+        }).present()
+        console.error(e);
+      }      
+    }       
     
+  }
+
+  validatePassword(){
+    if(this.user.password == undefined || this.user.confirmPassword == undefined){
+      this.alertCtrl.create({
+        message: 'You have to fill the password fields'+`
+        <br><br>
+        <div><img src="assets/imgs/question_icon.png" weight="50px" height="50px"></div>`,
+        buttons: ['Dismiss']
+      }).present();
+      return false;
+    }else if(this.user.password != this.user.confirmPassword){
+      this.alertCtrl.create({
+        message: 'The password filds are not matching'+`
+        <br><br>
+        <div><img src="assets/imgs/question_icon.png" weight="50px" height="50px"></div>`,
+        buttons: ['Dismiss']
+      }).present();
+      return false;
+    }
+    return true;
   }
 
 }

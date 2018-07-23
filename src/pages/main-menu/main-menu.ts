@@ -23,7 +23,8 @@ export class MainMenuPage {
   pages:Page [] = [
     {title:'Search Page',pageName:'ReportsPage', tabComponent: 'SearchPage',index:0,icon:'search'},
     {title:'Report',pageName:'ReportsPage', tabComponent: 'ReportsPage',index:1,icon:'paper'},
-    {title:'User Settings',pageName:'UserSettingsPage',tabComponent:'UserSettingsPage',icon:'settings'}
+    {title:'User Settings',pageName:'UserSettingsPage',tabComponent:'UserSettingsPage',icon:'settings'},
+    {title: 'Content',pageName: 'TwitterViewPage',tabComponent:'TwitterViewPage',index:2,icon:'home'}
   ]
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {

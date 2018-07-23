@@ -75,8 +75,9 @@ export class LoginPage {
     this.presentLoading();
     try{
       const result = await  this.afAuth.auth.signInWithEmailAndPassword(user.email,user.password)
-      .then(()=>{
-        this.loading.dismiss();        
+      .then((data)=>{
+        this.loading.dismiss();   
+        console.log(data.user.uid);     
           
         // this.alertCtrl.create({
         //   message : `Login Success <br><br> <img src="assets/imgs/done_icon.png" width="40px" height="40px">`,
