@@ -3,6 +3,8 @@ import { IonicPage, NavController, NavParams, Platform, Loading, LoadingControll
 import { HttpClient} from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { TwitterUser } from '../../models/TwitterUsers';
+
+import 'rxjs/operator/map'
 /**
  * Generated class for the SearchPage page.
  *
@@ -21,31 +23,39 @@ export class SearchPage {
   tab2Root = 'ReportsPage';
   myIndex: number;
   //For data transfering
-  posts: Observable<TwitterUser[]>;
+  users: Observable<TwitterUser[]>;
   title:string;
   private url = '/api';
   loading:Loading;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams,private http:HttpClient,private _platform:Platform,
-    private loadingCtrl:LoadingController,private alertCtrl:AlertController) {
-    this.loading=this.loadingCtrl.create({
-      content: 'Please wait while twitter sends the requested pages'
-    })
-    
-  }
+	constructor(public navCtrl: NavController, public navParams: NavParams,private http:HttpClient,private _platform:Platform,
+		private loadingCtrl:LoadingController,private alertCtrl:AlertController) {
+		this.loading=this.loadingCtrl.create({
+			content: 'Please wait while twitter sends the requested pages'
+		})    
+ 	}
+
+
+  //  search(input: string){
+  //   this.http.get<Observable<TwitterUser[]>>((this.url)+"/twitter_users/"+this.title)
+  //   .subscribe(response=>this.posts= response)
+  //  }
+
 
   searchTwitterProfiles(input: string){
 
     this.presentLoading();
+
     if(this._platform.is("cordova")){      
       this.url = "https://slitt-research-se.appspot.com/";
     }
 
     try{
       
-      this.http.get<TwitterUser[]>((this.url)+"/twitter_users/"+this.title).subscribe(
+      this.http.get<Observable<TwitterUser[]>>((this.url)+"/twitter_users/"+this.title)
+      .subscribe(
         data=>{          
-          this.posts =data;
+          this.users =data;
           this.loading.dismiss();
         },
         error=>{
@@ -60,11 +70,7 @@ export class SearchPage {
     }catch(e){
       this.loading.dismiss();
       console.error(e);
-    }
-    
-    
-       
-    
+    }    
   }
 
   // createPost(input: HTMLInputElement){

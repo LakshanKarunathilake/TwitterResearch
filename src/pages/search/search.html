@@ -17,24 +17,48 @@
 </ion-header>
 
 
-<ion-content padding>
-  <ion-item>
-      <ion-label floating>Title</ion-label>
-      <ion-input type="text"  [(ngModel)]="title"  (keyup.enter)="searchTwitterProfiles(title)" ></ion-input>
+<ion-content padding> 
+ 
+  <ion-row>
+    <ion-col col-11>
+      <ion-item>
+          <ion-input type="text"  [(ngModel)]="title"  (keyup.enter)="searchTwitterProfiles(title)" ></ion-input>
+      </ion-item>      
+    </ion-col>
+    <ion-col col-1>
+      <button ion-button outline (click)="searchTwitterProfiles(title)">
+          <ion-icon name="search"></ion-icon>
+      </button>
       
-        
-      
-  </ion-item>
-  <button ion-button (click)="searchTwitterProfiles(title)">search</button>
+    </ion-col>
+  </ion-row>
+
+  
   
   <p>This is the page which can be used to search twitter pages to the analysis purposes</p>
-  <ion-list>
-    <ion-item *ngFor="let post of posts">{{post | json }}</ion-item>
-  </ion-list>
+  
   <div>
-    <ion-card>
-
-    </ion-card>
+    <ion-card *ngFor="let user of users">
+      <ion-card-header color="danger" style="font-weight: bold">{{user.screen_name}}</ion-card-header>
+      <ion-item >
+        
+        <ion-avatar item-start>
+          <img src="{{user.profile_image_url}}" alt="image_not_found">
+        </ion-avatar> 
+        <div>
+            <ion-icon name="logo-twitter" color="primary" item-start></ion-icon>
+            Followers
+            <ion-badge end>{{user.followers_count}}</ion-badge>
+        </div>
+        <div>
+            <ion-icon name="person-add" color="primary" style="zoom: 1.2;" item-start></ion-icon>
+            Followers
+            <ion-badge end>{{user.friends_count}}</ion-badge>
+        </div>
+      </ion-item>
+      <p padding-left padding-right style="text-align: justify">{{user.description}}</p>
+      <ion-label padding-left >laksgha</ion-label>
+  </ion-card>
   </div> 
       
 </ion-content>
