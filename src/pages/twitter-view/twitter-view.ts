@@ -19,11 +19,12 @@ export class TwitterViewPage {
   user: TwitterUser;
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {
+    this.user = this.navParams.data;
   }
 
   ionViewDidLoad() {
     this.user = this.navParams.data;
-    console.log(this.user);
+    console.log(this.user.screen_name);
   }
 
   

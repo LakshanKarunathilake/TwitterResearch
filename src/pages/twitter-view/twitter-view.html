@@ -10,11 +10,16 @@
             <button ion-button menuToggle>
               <ion-icon name="menu"></ion-icon>
             </button>
-          </ion-buttons>      
+          </ion-buttons>
+      <ion-title>{{user.screen_name}}</ion-title>
     </ion-navbar>
 </ion-header>
 
 
 <ion-content padding>
-  <button (click)="removePage()"></button>
+  <ion-item>
+    <ion-avatar>
+      <img src="{{user.profile_image_url}}" alt="">
+    </ion-avatar>
+  </ion-item>  
 </ion-content>
