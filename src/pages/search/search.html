@@ -11,17 +11,31 @@
     <ion-title>Twitter Search</ion-title>
   </ion-navbar>
   <ion-toolbar>
-      <ion-searchbar placeholder="Enter key word" #title (keyup.enter)="searchTwitterProfiles(title)" ></ion-searchbar>
+      <ion-searchbar placeholder="Enter key word" [(ngModel)]="title"  (ionInput)="searchTwitterProfiles(title)"  ></ion-searchbar>
   </ion-toolbar>
 
 </ion-header>
 
 
 <ion-content padding>
+  <ion-item>
+      <ion-label floating>Title</ion-label>
+      <ion-input type="text"  [(ngModel)]="title"  (keyup.enter)="searchTwitterProfiles(title)" ></ion-input>
+      
+        
+      
+  </ion-item>
+  <button ion-button (click)="searchTwitterProfiles(title)">search</button>
+  
   <p>This is the page which can be used to search twitter pages to the analysis purposes</p>
   <ion-list>
-    <ion-item *ngFor="let post of posts | async">{{post | json}}</ion-item>
-  </ion-list> 
+    <ion-item *ngFor="let post of posts">{{post | json }}</ion-item>
+  </ion-list>
+  <div>
+    <ion-card>
+
+    </ion-card>
+  </div> 
       
 </ion-content>
 
