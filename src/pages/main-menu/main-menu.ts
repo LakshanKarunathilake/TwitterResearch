@@ -17,51 +17,28 @@ import { User } from '../../models/User';
 })
 export class MainMenuPage {
   
-  rootPage = "TabsPage";
+  rootPage = "InfoPage";
   user_loggedIn: User;
 
   @ViewChild(Nav) nav:Nav;
 
   pages:Page [] = [
-    {title:'Search Page',pageName:'ReportsPage', tabComponent: 'SearchPage',index:0,icon:'search'},
-    {title:'Report',pageName:'ReportsPage', tabComponent: 'ReportsPage',index:1,icon:'paper'},
-    {title:'User Settings',pageName:'UserSettingsPage',tabComponent:'UserSettingsPage',icon:'settings'},
-    {title: 'Content',pageName: 'TwitterViewPage',tabComponent:'TwitterViewPage',icon:'home'}
+    {title:'Search Page',component: 'SearchPage',icon:'search'},
+    {title:'Report', component: 'ReportsPage',icon:'paper'},
+    {title:'User Settings',component:'UserSettingsPage',icon:'settings'},
+    
   ]
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {
-    
+    this.user_loggedIn = navParams.data;
+    console.log('-----Main MEnu----');
+    console.log(this.user_loggedIn.userId);
   }
 
   onPage(page:Page){
-    let params = {};
-
-    if(page.index){
-      params = {
-        tabIndex: page.index
-      }
-    }
-
-    if(this.nav.getActiveChildNavs() && page.index != undefined){
-      this.nav.getActiveChildNav().insert(page.index,params);
-    }else{
-      this.nav.setRoot(page.tabComponent,params);
-    }
+    this.nav.setRoot(page.component,this.user_loggedIn);
   }
 
-  isActive(page:Page){
-    let childNav = this.nav.getActiveChildNav();
-
-    if(childNav){
-      if(childNav.getSelected() && childNav.getSelected.root === page.tabComponent){
-        return 'primary';
-      }
-     return;
-    }
-
-    if(this.nav.getActive() && this.nav.getActive().name === page.pageName){
-      return 'primary';
-    }
-  }
+  
 
 }

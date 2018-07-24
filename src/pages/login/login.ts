@@ -80,7 +80,7 @@ export class LoginPage {
       const result = await  this.afAuth.auth.signInWithEmailAndPassword(user.email,user.password)
       .then((data)=>{
         this.loading.dismiss();   
-        
+        this.user.userId = data.user.uid;
         
           
         // this.alertCtrl.create({

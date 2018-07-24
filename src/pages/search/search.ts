@@ -35,7 +35,7 @@ export class SearchPage {
 		private loadingCtrl:LoadingController,private alertCtrl:AlertController) {
      this.user_loggedIn = this.navParams.data;
      console.log('----Seacrh Page-----');
-     console.log(this.user_loggedIn);
+     console.log(this.user_loggedIn.userId);
  	}
 
 
@@ -89,7 +89,7 @@ export class SearchPage {
   // }
 
   viewPage(user: TwitterUser){
-    this.navCtrl.push('TwitterViewPage',user);
+    this.navCtrl.push('TwitterViewPage',{acc_data:user,logged_in:this.user_loggedIn});
   }
 
   presentLoading(){

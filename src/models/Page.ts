@@ -1,7 +1,6 @@
 export interface Page {
-    title: string;
-    pageName: string;
-    tabComponent?: string;
-    index?: number;
-    icon: string;
+    title: string;   
+    component: string;
+    openTab?: number;
+    icon?: string;
 }

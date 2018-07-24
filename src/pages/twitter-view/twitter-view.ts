@@ -21,8 +21,10 @@ export class TwitterViewPage {
   user_loggedIn: User;
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {
-    this.twitter_user = this.navParams.data;
+    this.twitter_user = this.navParams.get('acc_data');
+    this.user_loggedIn = this.navParams.get('logged_in');
     console.log(this.twitter_user);
+    console.log(this.user_loggedIn.userId);
   }
 
   
