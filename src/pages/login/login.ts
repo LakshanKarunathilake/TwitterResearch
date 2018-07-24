@@ -3,6 +3,7 @@ import { IonicPage, NavController, NavParams,ActionSheetController, AlertControl
 import { User } from '../../models/User';
 
 import { AngularFireAuth} from 'angularfire2/auth';
+import {FirebaseWrite } from '../../utilities/FirebaseWriting'
 
 
 
@@ -22,6 +23,7 @@ export class LoginPage {
 
   user = {} as User;
   loading: Loading;
+  firebase:FirebaseWrite;
 
   constructor(private navCtrl: NavController, public navParams: NavParams,private actControl:ActionSheetController,private afAuth:AngularFireAuth
   ,private alertCtrl: AlertController,private loadingCtrl:LoadingController) {
@@ -43,8 +45,8 @@ export class LoginPage {
         {
           text: 'Yes',          
           handler: () => {
-            // this.moveToHomePage();
-            this.navCtrl.push('MainMenuPage');
+            this.moveToHomePage();
+           
           }
         },{
           text: 'No',
@@ -65,10 +67,11 @@ export class LoginPage {
 
   moveToSignupPage(){
     this.navCtrl.push("RegisterPage");
+    
   }
   
   moveToHomePage(){
-    this.navCtrl.push("MainMenuPage");
+    this.navCtrl.push("MainMenuPage",this.user);
   }
 
   async clickLogin(user: User){
@@ -77,7 +80,8 @@ export class LoginPage {
       const result = await  this.afAuth.auth.signInWithEmailAndPassword(user.email,user.password)
       .then((data)=>{
         this.loading.dismiss();   
-        console.log(data.user.uid);     
+        
+        
           
         // this.alertCtrl.create({
         //   message : `Login Success <br><br> <img src="assets/imgs/done_icon.png" width="40px" height="40px">`,

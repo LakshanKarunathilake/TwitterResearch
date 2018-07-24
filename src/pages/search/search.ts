@@ -5,6 +5,7 @@ import { Observable } from 'rxjs/Observable';
 import { TwitterUser } from '../../models/TwitterUsers';
 
 import 'rxjs/operator/map'
+import { User } from '../../models/User';
 /**
  * Generated class for the SearchPage page.
  *
@@ -28,11 +29,13 @@ export class SearchPage {
   private url = '/api';
   loading:Loading;
 
+  user_loggedIn: User;
+
 	constructor(public navCtrl: NavController, public navParams: NavParams,private http:HttpClient,private _platform:Platform,
 		private loadingCtrl:LoadingController,private alertCtrl:AlertController) {
-		this.loading=this.loadingCtrl.create({
-			content: 'Please wait while twitter sends the requested pages'
-		})    
+     this.user_loggedIn = this.navParams.data;
+     console.log('----Seacrh Page-----');
+     console.log(this.user_loggedIn);
  	}
 
 

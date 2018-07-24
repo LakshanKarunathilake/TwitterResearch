@@ -28,7 +28,7 @@
     "angularfire2": "^5.0.0-rc.11",
     "cordova-android": "7.0.0",
     "cordova-plugin-device": "^2.0.2",
-    "cordova-plugin-ionic": "^4.1.7",
+    "cordova-plugin-ionic": "^4.2.0",
     "cordova-plugin-ionic-keyboard": "^2.1.2",
     "cordova-plugin-ionic-webview": "^1.2.1",
     "cordova-plugin-splashscreen": "^5.0.2",

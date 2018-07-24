@@ -11,15 +11,33 @@
               <ion-icon name="menu"></ion-icon>
             </button>
           </ion-buttons>
-      <ion-title>{{user.screen_name}}</ion-title>
+      <ion-title>{{twitter_user.screen_name}}</ion-title>
     </ion-navbar>
 </ion-header>
 
 
-<ion-content padding>
-  <ion-item>
-    <ion-avatar>
-      <img src="{{user.profile_image_url}}" alt="">
-    </ion-avatar>
-  </ion-item>  
+<ion-content >
+    <ion-item padding-left padding-right>
+        <ion-avatar item-start>
+          <img src="{{twitter_user.profile_image_url}}">
+        </ion-avatar>
+        <h2 style="font-weight: bolder;color: #f53d3d" >{{twitter_user.screen_name}}</h2>        
+    </ion-item>
+    <p padding style="text-align: justify">{{twitter_user.description}}</p>
+    <ion-item-divider color="primary">Subscribing Data</ion-item-divider>
+    <p padding-left padding-right style="text-align: justify"> You are about to subscribe this accounts post and public data for the reviewing purposes please 
+      agree to the terms in twitter privary policies and do not use these details for illegal predictions </p>
+    <ul>
+      <li>10 posts will be subscribed</li>
+      <li>Posts will include photos</li>
+      <li>Number of retweets</li>
+      <li>Number of likes for each tweet</li>
+      <li>Time the tweet is tweeted</li>
+    </ul>
+    <ion-buttons padding-left padding-right style="padding-top:25px">
+        <button  ion-button padding-left padding-right block color="danger">Subscribe</button>
+    </ion-buttons>
+    
+    
+  
 </ion-content>

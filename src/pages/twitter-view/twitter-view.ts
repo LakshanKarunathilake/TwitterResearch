@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { TwitterUser } from '../../models/TwitterUsers';
+import { User } from '../../models/User';
 
 /**
  * Generated class for the TwitterViewPage page.
@@ -16,16 +17,15 @@ import { TwitterUser } from '../../models/TwitterUsers';
 })
 export class TwitterViewPage {
 
-  user: TwitterUser;
+  twitter_user: TwitterUser;
+  user_loggedIn: User;
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {
-    this.user = this.navParams.data;
+    this.twitter_user = this.navParams.data;
+    console.log(this.twitter_user);
   }
 
-  ionViewDidLoad() {
-    this.user = this.navParams.data;
-    console.log(this.user.screen_name);
-  }
+  
 
   
 }

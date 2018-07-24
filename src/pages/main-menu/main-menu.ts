@@ -1,6 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { IonicPage, NavController, NavParams, Nav } from 'ionic-angular';
 import { Page } from '../../models/Page';
+import { User } from '../../models/User';
 
 /**
  * Generated class for the MainMenuPage page.
@@ -17,6 +18,7 @@ import { Page } from '../../models/Page';
 export class MainMenuPage {
   
   rootPage = "TabsPage";
+  user_loggedIn: User;
 
   @ViewChild(Nav) nav:Nav;
 
@@ -24,10 +26,11 @@ export class MainMenuPage {
     {title:'Search Page',pageName:'ReportsPage', tabComponent: 'SearchPage',index:0,icon:'search'},
     {title:'Report',pageName:'ReportsPage', tabComponent: 'ReportsPage',index:1,icon:'paper'},
     {title:'User Settings',pageName:'UserSettingsPage',tabComponent:'UserSettingsPage',icon:'settings'},
-    {title: 'Content',pageName: 'TwitterViewPage',tabComponent:'TwitterViewPage',index:2,icon:'home'}
+    {title: 'Content',pageName: 'TwitterViewPage',tabComponent:'TwitterViewPage',icon:'home'}
   ]
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {
+    
   }
 
   onPage(page:Page){
@@ -39,8 +42,8 @@ export class MainMenuPage {
       }
     }
 
-    if(this.nav.getActiveChildNav() && page.index != undefined){
-      this.nav.getActiveChildNav().select(page.index);
+    if(this.nav.getActiveChildNavs() && page.index != undefined){
+      this.nav.getActiveChildNav().insert(page.index,params);
     }else{
       this.nav.setRoot(page.tabComponent,params);
     }
