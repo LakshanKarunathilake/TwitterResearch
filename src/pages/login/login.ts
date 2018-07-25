@@ -3,7 +3,9 @@ import { IonicPage, NavController, NavParams,ActionSheetController, AlertControl
 import { User } from '../../models/User';
 
 import { AngularFireAuth} from 'angularfire2/auth';
-import {FirebaseWrite } from '../../utilities/FirebaseWriting'
+import { FireStoreSetup } from '../../utilities/FirebaseWriting'
+import { AngularFirestore } from 'angularfire2/firestore';
+
 
 
 
@@ -14,6 +16,7 @@ import {FirebaseWrite } from '../../utilities/FirebaseWriting'
  * Ionic pages and navigation.
  */
 
+
 @IonicPage()
 @Component({
   selector: 'page-login',
@@ -23,10 +26,10 @@ export class LoginPage {
 
   user = {} as User;
   loading: Loading;
-  firebase:FirebaseWrite;
+ 
 
   constructor(private navCtrl: NavController, public navParams: NavParams,private actControl:ActionSheetController,private afAuth:AngularFireAuth
-  ,private alertCtrl: AlertController,private loadingCtrl:LoadingController) {
+  ,private alertCtrl: AlertController,private loadingCtrl:LoadingController,private afs:AngularFirestore) {
     
   }
 
@@ -70,8 +73,12 @@ export class LoginPage {
     
   }
   
-  moveToHomePage(){
+  async moveToHomePage(){
+    let fs= new FireStoreSetup(this.afs,this.user);
+    var val =  await fs.subscribe();
+    this.user.document_ID = val['docID'];
     this.navCtrl.push("MainMenuPage",this.user);
+    
   }
 
   async clickLogin(user: User){
@@ -80,13 +87,7 @@ export class LoginPage {
       const result = await  this.afAuth.auth.signInWithEmailAndPassword(user.email,user.password)
       .then((data)=>{
         this.loading.dismiss();   
-        this.user.userId = data.user.uid;
-        
-          
-        // this.alertCtrl.create({
-        //   message : `Login Success <br><br> <img src="assets/imgs/done_icon.png" width="40px" height="40px">`,
-        //   buttons: ['Dismiss'],          
-        // }).present();        
+        this.user.userId = data.user.uid;  
         this.presentActionSheet();
       });
       console.log(result);
@@ -104,5 +105,8 @@ export class LoginPage {
    
     
   }
+
+ 
+
 
 }

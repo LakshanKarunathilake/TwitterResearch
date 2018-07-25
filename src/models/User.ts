@@ -3,4 +3,5 @@ export interface User {
     password: string;
     confirmPassword?: string;
     userId?: string;
+    document_ID?: string;
 }
