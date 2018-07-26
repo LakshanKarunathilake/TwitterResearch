@@ -58,14 +58,15 @@ export class TwitterViewPage {
         this.alertCtrl.create({
           message: 'You have already subscribed for this channel',
           buttons: ['dismiss']
-        }).present();
+        }).present();        
       }
     }else{
       this.alertCtrl.create({
         message: 'You have already subscibed the maximum limit',
         buttons: ['dismiss']
-      }).present();
+      }).present();      
     } 
+    this.navCtrl.pop();
   }
 
   async checkSuitability(){
@@ -92,9 +93,9 @@ export class TwitterViewPage {
         id:this.twitter_user.id_str,
         name: this.twitter_user.screen_name
       },{merge:true})
-      .then(()=>{
-        this.navCtrl.pop();
-      })
+      // .then(()=>{
+      //   this.navCtrl.pop();
+      // })
     } 
     
     

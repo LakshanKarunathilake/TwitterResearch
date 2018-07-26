@@ -16,18 +16,9 @@ export class FireStoreSetup {
     fire_users_collection: AngularFirestoreCollection<Store_User>;
     fire_users: Store_User[]=[];
 
-    async subscribe(){
+    async subscribeThis(){
         
         return await this.getUserDetails();
-        
-
-        // var a = this.getUserDetails()        
-        // .then((t1=>{
-        //     console.log('subscribe',t1); 
-        //     a = t1;        
-        // })
-        
-               
      }
     
      addTheUser(){

@@ -74,11 +74,14 @@ export class LoginPage {
   }
   
   async moveToHomePage(){
+    this.presentLoading();
     let fs= new FireStoreSetup(this.afs,this.user);
-    var val =  await fs.subscribe();
+    var val =  await fs.subscribeThis();
     console.log(val);
     this.user.document_ID = val['docID'];
-    this.navCtrl.push("MainMenuPage",this.user);
+    this.navCtrl.push("MainMenuPage",this.user).then(()=>{
+      this.loading.dismiss();
+    })
     
   }
 
