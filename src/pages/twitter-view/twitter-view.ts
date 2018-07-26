@@ -4,6 +4,7 @@ import { TwitterUser } from '../../models/TwitterUsers';
 import { User } from '../../models/User';
 
 import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
+import { Fire_Twitter } from '../../models/Frie_Twitter';
 
 
 
@@ -14,11 +15,7 @@ import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/fires
  * Ionic pages and navigation.
  */
 
- interface Fire_Twitter{
-   name: string;
-   id: string;
- }
-
+ 
   
 
 @IonicPage()
@@ -42,10 +39,14 @@ export class TwitterViewPage {
   }
 
   async subscribe(){
-    var a = await this.checkSuitability()
-    if(a.length >=0 && a.length<5){
+    var a =  await this.checkSuitability()
+    console.log(a);
+    let b = Object.keys(a);
+    console.log('b is',b.length);
+    
+    if(b.length >=0 && b.length<5){
       let exists:boolean = false;
-      for (let index = 0; index < a.length; index++) {
+      for (let index = 0; index < b.length; index++) {
         if(a[index].id == this.twitter_user.id_str){
           exists = true
         }
@@ -53,8 +54,18 @@ export class TwitterViewPage {
       }
       if(!exists){
         this.createTwitterSubscribe();
+      }else{
+        this.alertCtrl.create({
+          message: 'You have already subscribed for this channel',
+          buttons: ['dismiss']
+        }).present();
       }
-    }  
+    }else{
+      this.alertCtrl.create({
+        message: 'You have already subscibed the maximum limit',
+        buttons: ['dismiss']
+      }).present();
+    } 
   }
 
   async checkSuitability(){
@@ -65,11 +76,7 @@ export class TwitterViewPage {
    
       this.subscribed_accounts_collection.valueChanges()
       .subscribe(data=>{
-        console.log(data);
-        if(data.length == 0){
-          console.log('Subscribing')
-          this.createTwitterSubscribe();
-        }        
+        console.log(data);              
         this.subscribed_accounts = data;
         resolve(data);        
       })
@@ -88,7 +95,9 @@ export class TwitterViewPage {
       .then(()=>{
         this.navCtrl.pop();
       })
-    }    
+    } 
+    
+    
   
   
 }

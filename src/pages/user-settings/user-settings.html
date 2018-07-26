@@ -18,6 +18,19 @@
 </ion-header>
 
 
-<ion-content padding>
-
+<ion-content >
+  <ion-item-divider><ion-title color="primary">Subscribed Accounts</ion-title></ion-item-divider>
+  <ion-buttons padding>
+    <ion-row *ngFor="let subscription of subscriptions | async">
+      <ion-col col-10>
+        <button  style="padding-bottom: 5px;text-align: left" ion-button outline block #btn>{{subscription.name}}</button>
+      </ion-col>
+      <ion-col padding-right col-1>
+          <button color="danger" ion-button icon-only (click)="unsubscribeAcc(subscription.name)"><ion-icon end name="remove"></ion-icon></button>
+      </ion-col>
+     
+      
+    </ion-row>
+    
+  </ion-buttons>
 </ion-content>
