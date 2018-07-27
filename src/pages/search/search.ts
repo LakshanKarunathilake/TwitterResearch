@@ -26,7 +26,7 @@ export class SearchPage {
   //For data transfering
   users: Observable<TwitterUser[]>;
   title:string;
-  private url = '/api';
+  private url = 'api';
   loading:Loading;
 
   user_loggedIn: User;

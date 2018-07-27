@@ -39,7 +39,7 @@ export class UserSettingsPage {
   }
 
   loadSubscribedAccs(){
-    this.subscriptions_collection = this.afs.collection('UserData').doc(this.user_loggedIn.document_ID).collection('SubscribedAccs');
+    this.subscriptions_collection = this.afs.collection('UserData').doc(this.user_loggedIn.document_ID).collection('TwitterSubscriptions');
     this.subscriptions = this.subscriptions_collection.snapshotChanges().pipe(
       map(actions => actions.map(a => {
        

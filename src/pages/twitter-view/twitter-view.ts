@@ -5,6 +5,10 @@ import { User } from '../../models/User';
 
 import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
 import { Fire_Twitter } from '../../models/Frie_Twitter';
+import { InsertToFireStore } from './InserToFireStore';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { Tweet } from '../../models/Tweet';
 
 
 
@@ -31,7 +35,7 @@ export class TwitterViewPage {
   subscribed_accounts_collection: AngularFirestoreCollection<Fire_Twitter>;
   subscribed_accounts: Fire_Twitter[]=[];  
 
-  constructor(public navCtrl: NavController, public navParams: NavParams,private afs:AngularFirestore,private alertCtrl:AlertController) {
+  constructor(public navCtrl: NavController, public navParams: NavParams,private afs:AngularFirestore,private alertCtrl:AlertController,private http:HttpClient) {
     this.twitter_user = this.navParams.get('acc_data');
     this.user_loggedIn = this.navParams.get('logged_in');
     console.log('docID',this.user_loggedIn.document_ID);
@@ -67,13 +71,17 @@ export class TwitterViewPage {
       }).present();      
     } 
     this.navCtrl.pop();
+
+    // Saving Data To the Database
+
+    
   }
 
   async checkSuitability(){
     return new Promise((resolve,reject)=>{
       this.subscribed_accounts_collection =  this.afs.collection('UserData',ref=>{
         return ref.where('userID','==',this.user_loggedIn.userId)
-      }).doc(this.user_loggedIn.document_ID).collection('SubscribedAccs')
+      }).doc(this.user_loggedIn.document_ID).collection('TwitterSubscriptions')
    
       this.subscribed_accounts_collection.valueChanges()
       .subscribe(data=>{
@@ -88,15 +96,23 @@ export class TwitterViewPage {
 
   createTwitterSubscribe(){
     
-      const id = this.afs.createId();
-      this.subscribed_accounts_collection.doc(id).set({
+      const subscription_ID = this.afs.createId();
+      this.subscribed_accounts_collection.doc(subscription_ID).set({
         id:this.twitter_user.id_str,
         name: this.twitter_user.screen_name
       },{merge:true})
-      // .then(()=>{
-      //   this.navCtrl.pop();
-      // })
+      .then(()=>{
+        let insertion = new InsertToFireStore(this.afs,this.http)
+        insertion.ObtainData(
+          {
+            collection: this.subscribed_accounts_collection,
+            id: subscription_ID,
+            name: this.twitter_user.screen_name
+          })
+      })
     } 
+
+    
     
     
   
