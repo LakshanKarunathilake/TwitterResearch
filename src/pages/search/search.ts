@@ -26,7 +26,7 @@ export class SearchPage {
   //For data transfering
   users: Observable<TwitterUser[]>;
   title:string;
-  private url = 'api';
+  private url = "/api";
   loading:Loading;
 
   user_loggedIn: User;
@@ -50,12 +50,13 @@ export class SearchPage {
     this.presentLoading();
 
     if(this._platform.is("cordova")){      
-      this.url = "https://slitt-research-se.appspot.com";
+      this.url = "https://slitt-research-se.appspot.com/";
     }
 
     try{
-      
-      this.http.get<Observable<TwitterUser[]>>((this.url)+"/twitter_users/"+this.title)
+      let api_call = this.url+"/twitter_users/"+this.title;
+      console.log('search in',api_call);
+      this.http.get<Observable<TwitterUser[]>>(api_call)
       .subscribe(
         data=>{          
           this.users =data;

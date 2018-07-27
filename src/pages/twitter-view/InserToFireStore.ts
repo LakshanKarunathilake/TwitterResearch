@@ -1,3 +1,4 @@
+import { Platform } from 'ionic-angular';
 import { AngularFirestore, AngularFirestoreCollection } from "angularfire2/firestore";
 import { Fire_Twitter } from "../../models/Frie_Twitter";
 import { HttpClient } from "@angular/common/http";
@@ -7,10 +8,12 @@ import { elementAt } from "rxjs/operators";
 
 export class InsertToFireStore{
 
-    private url = 'api';
+    private url = "/api";
     Tweets: Observable<Tweet[]>;
-    constructor(private afs: AngularFirestore,private http:HttpClient){
-      
+    constructor(private afs: AngularFirestore,private http:HttpClient,private _platform:Platform){
+        if(this._platform.is("cordova")){      
+            this.url = "https://slitt-research-se.appspot.com/";
+        }
     }
 
     saveToCollection(data){
