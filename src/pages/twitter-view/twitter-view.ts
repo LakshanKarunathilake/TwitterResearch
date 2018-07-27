@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, AlertController, Platform } from 'ionic-angular';
 import { TwitterUser } from '../../models/TwitterUsers';
 import { User } from '../../models/User';
 
@@ -35,7 +35,8 @@ export class TwitterViewPage {
   subscribed_accounts_collection: AngularFirestoreCollection<Fire_Twitter>;
   subscribed_accounts: Fire_Twitter[]=[];  
 
-  constructor(public navCtrl: NavController, public navParams: NavParams,private afs:AngularFirestore,private alertCtrl:AlertController,private http:HttpClient) {
+  constructor(public navCtrl: NavController, public navParams: NavParams,private afs:AngularFirestore,private alertCtrl:AlertController,private http:HttpClient
+  ,private _platform: Platform) {
     this.twitter_user = this.navParams.get('acc_data');
     this.user_loggedIn = this.navParams.get('logged_in');
     console.log('docID',this.user_loggedIn.document_ID);
@@ -102,7 +103,7 @@ export class TwitterViewPage {
         name: this.twitter_user.screen_name
       },{merge:true})
       .then(()=>{
-        let insertion = new InsertToFireStore(this.afs,this.http)
+        let insertion = new InsertToFireStore(this.afs,this.http,this._platform)
         insertion.ObtainData(
           {
             collection: this.subscribed_accounts_collection,

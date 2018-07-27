@@ -1,10 +1,11 @@
 import { Platform } from 'ionic-angular';
-import { AngularFirestore, AngularFirestoreCollection } from "angularfire2/firestore";
-import { Fire_Twitter } from "../../models/Frie_Twitter";
+import { AngularFirestore } from "angularfire2/firestore";
+
 import { HttpClient } from "@angular/common/http";
 import { Tweet } from "../../models/Tweet";
 import { Observable } from "rxjs";
-import { elementAt } from "rxjs/operators";
+import { Tweet_Reply } from '../../models/Tweet_Reply';
+
 
 export class InsertToFireStore{
 
@@ -12,7 +13,7 @@ export class InsertToFireStore{
     Tweets: Observable<Tweet[]>;
     constructor(private afs: AngularFirestore,private http:HttpClient,private _platform:Platform){
         if(this._platform.is("cordova")){      
-            this.url = "https://slitt-research-se.appspot.com/";
+            this.url = "https://slitt-research-se.appspot.com";
         }
     }
 
@@ -30,10 +31,14 @@ export class InsertToFireStore{
         .set(data.tweet,{merge:true})
         .then(()=>{
             console.log('Data Written Successfully');
-        })
+            this.getReplies({
+                collection:data.collection,
+                subscription_id: data.subscription_id,
+                tweet_id:id,
+                screen_name:data.subscription_name
 
-        
-        
+            })
+        })
     }
 
     ObtainData(data){
@@ -47,7 +52,8 @@ export class InsertToFireStore{
                     {
                         tweet:element,
                         collection: data.collection,
-                        subscription_id: data.id
+                        subscription_id: data.id,
+                        subscription_name: data.name
                     }
                 );                           
             }
@@ -61,6 +67,30 @@ export class InsertToFireStore{
             console.log(data);
         })
     }
+
+    getReplies(data){
+        let retweet_api_call = this.url+"/get_replies/"+data.screen_name+"/"+data.tweet_id;
+        this.http.get<Observable<Tweet_Reply[]>>(retweet_api_call).
+        subscribe(a=>{
+            a.forEach(element => {
+                this.saveReplies(
+                    {
+                        collection: data.collection,
+                        subscription_id: data.subscription_id,
+                        tweet_id: data.tweet_id,
+                        reply: element
+                    }
+                )
+            });
+        })
+    }
+
+    saveReplies(data){
+        const id = this.afs.createId();
+        data.collection.doc(data.subscription_id).collection('RawData').doc(data.tweet_id).collection('Replies').doc(id)
+        .set(data.element,{merge:true})
+    }
+   
 
 
 }

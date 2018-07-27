@@ -55,8 +55,5 @@ export class FireStoreSetup {
                                
               })
           })
-       
-       
      }
-    
 }
