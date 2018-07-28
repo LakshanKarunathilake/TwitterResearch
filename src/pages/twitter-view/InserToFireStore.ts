@@ -5,16 +5,20 @@ import { HttpClient } from "@angular/common/http";
 import { Tweet } from "../../models/Tweet";
 import { Observable } from "rxjs";
 import { Tweet_Reply } from '../../models/Tweet_Reply';
+import { AnalysisToDB } from '../../utilities/AnalysisToDB/AnalysisToDB';
+
 
 
 export class InsertToFireStore{
 
     private url = "/api";
     Tweets: Observable<Tweet[]>;
+    
     constructor(private afs: AngularFirestore,private http:HttpClient,private _platform:Platform){
         if(this._platform.is("cordova")){      
             this.url = "https://slitt-research-se.appspot.com";
         }
+        
     }
 
     saveToCollection(data){
@@ -23,7 +27,14 @@ export class InsertToFireStore{
         if(data.tweet.img_url != undefined){
             // console.log('img',data.element.img_url);
             console.log('img',data.tweet.img_url);
-            this.callToVisionAPI(data.tweet.img_url);
+            let analysis= new AnalysisToDB(this.http,this.afs);
+            analysis.callToVisionAPI(
+                {
+                    img_url:data.tweet.img_url,
+                    tweet_id:data.subscription_id,
+                    collection: data.collection
+
+                });
         }
         
     
@@ -61,12 +72,12 @@ export class InsertToFireStore{
         })
     }
 
-    callToVisionAPI(img_url:string){
-        let vision_api = this.url+"/get_image_analyse"
-        this.http.post(vision_api,{img_url:img_url}).subscribe(data=>{
-            console.log(data);
-        })
-    }
+    // callToVisionAPI(img_url:string){
+    //     let vision_api = this.url+"/get_image_analyse"
+    //     this.http.post(vision_api,{img_url:img_url}).subscribe(data=>{
+    //         console.log(data);
+    //     })
+    // }
 
     getReplies(data){
         let retweet_api_call = this.url+"/get_replies/"+data.screen_name+"/"+data.tweet_id;
@@ -89,6 +100,9 @@ export class InsertToFireStore{
         const id = this.afs.createId();
         data.collection.doc(data.subscription_id).collection('RawData').doc(data.tweet_id).collection('Replies').doc(id)
         .set(data.element,{merge:true})
+        .then(()=>{
+            console.log('Successfully Written Reply to DB');
+        })
     }
    
 
