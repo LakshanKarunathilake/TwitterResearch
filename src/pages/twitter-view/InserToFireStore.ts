@@ -23,32 +23,44 @@ export class InsertToFireStore{
 
     saveToCollection(data){
         const id = this.afs.createId();
-       
+        let analysis= new AnalysisToDB(this.http,this.afs);       
         if(data.tweet.img_url != undefined){
-            // console.log('img',data.element.img_url);
-            console.log('img',data.tweet.img_url);
-            let analysis= new AnalysisToDB(this.http,this.afs);
+                        
             analysis.callToVisionAPI(
                 {
                     img_url:data.tweet.img_url,
                     tweet_id:data.subscription_id,
                     collection: data.collection
-
-                });
+                }
+            );
         }
         
     
         data.collection.doc(data.subscription_id).collection('RawData').doc(id)
         .set(data.tweet,{merge:true})
         .then(()=>{
-            console.log('Data Written Successfully');
-            this.getReplies({
-                collection:data.collection,
-                subscription_id: data.subscription_id,
-                tweet_id:id,
-                screen_name:data.subscription_name
-
+            console.log('Tweet Written Successfully');
+            analysis.getSentiment(
+                {
+                    text: data.tweet.full_text,
+                    doc: data.collection.doc(data.subscription_id).collection('WatsonData').doc(id),
+                    isTweet: true    
+                }
+            ).then(()=>{
+                this.getReplies(
+                    {
+                    collection:data.collection,
+                    subscription_id: data.subscription_id,
+                    tweet_id:id,
+                    subscriptionAcc_id:data.tweet.id_str,
+                    screen_name:data.subscription_name,
+                    _analysis: analysis
+                    }
+                );
             })
+            
+            
+
         })
     }
 
@@ -65,6 +77,7 @@ export class InsertToFireStore{
                         collection: data.collection,
                         subscription_id: data.id,
                         subscription_name: data.name
+                        
                     }
                 );                           
             }
@@ -72,36 +85,42 @@ export class InsertToFireStore{
         })
     }
 
-    // callToVisionAPI(img_url:string){
-    //     let vision_api = this.url+"/get_image_analyse"
-    //     this.http.post(vision_api,{img_url:img_url}).subscribe(data=>{
-    //         console.log(data);
-    //     })
-    // }
-
     getReplies(data){
-        let retweet_api_call = this.url+"/get_replies/"+data.screen_name+"/"+data.tweet_id;
+        let retweet_api_call = this.url+"/get_replies/"+data.screen_name+"/"+data.subscriptionAcc_id;
+        
         this.http.get<Observable<Tweet_Reply[]>>(retweet_api_call).
         subscribe(a=>{
+            
             a.forEach(element => {
                 this.saveReplies(
                     {
                         collection: data.collection,
                         subscription_id: data.subscription_id,
                         tweet_id: data.tweet_id,
-                        reply: element
+                        reply: element,
+                        analysis: data._analysis
                     }
-                )
+                )                
             });
         })
     }
 
     saveReplies(data){
         const id = this.afs.createId();
+        
         data.collection.doc(data.subscription_id).collection('RawData').doc(data.tweet_id).collection('Replies').doc(id)
-        .set(data.element,{merge:true})
+        .set({reply:data.reply},{merge:true})
         .then(()=>{
-            console.log('Successfully Written Reply to DB');
+            console.log('Reply saved')
+            data.analysis.getSentiment(
+                {
+                    text: data.reply,
+                    doc: data.collection.doc(data.subscription_id).collection('WatsonData').doc(id),
+                    collection: data.collection.doc(data.subscription_id).collection('WatsonData'),
+                    tweet_id:data.tweet_id
+                }
+            )
+            
         })
     }
    
