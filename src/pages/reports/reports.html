@@ -18,6 +18,25 @@
 </ion-header>
 
 
-<ion-content padding>
+<ion-content >
+  
+  <p padding style="text-align: justify">
+    You can generate reports for the following subscribed accounts and you will be eligible to review several charts and several 
+    statistical reports you can use for future post productions...You will get these report views
+  </p>
+  <ul style="font-weight: bold;line-height: 1.6;">
+    <li>Visualiztion charts for Time,No of words against the like,replies,retweets</li>
+    <li>A wordcloud of description key words</li>
+    <li>A summary report of image details and hashtags</li>
+    <li>Sentiment analysis of current tweets and their replies</li>
+  </ul>
 
+  <ion-item-divider><ion-title color="primary">Subscribed Accounts</ion-title></ion-item-divider>
+  <ion-buttons padding>
+    <ion-row *ngFor="let subscription of subscriptions | async">      
+        <button  style="padding-bottom: 5px;text-align: left" ion-button outline block (click)="reportsPage(subscription.name)" >{{subscription.name}}</button>
+    
+    </ion-row>
+    
+  </ion-buttons>
 </ion-content>

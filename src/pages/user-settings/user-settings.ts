@@ -31,6 +31,14 @@ export class UserSettingsPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams,private afs:AngularFirestore,private alertCtrl:AlertController) {
     this.user_loggedIn=this.navParams.data;
+    if(this.user_loggedIn == undefined){
+      console.log('udnefined user')
+      this.user_loggedIn = {
+        email: 'a@1.com',
+        password: 'dummy',         
+        document_ID: '6EnCsdFUtDaCUqd68NXCHV8Bvcq1'
+      }
+    }
     this.loadSubscribedAccs();
   }
 
