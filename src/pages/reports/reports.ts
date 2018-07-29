@@ -49,7 +49,7 @@ export class ReportsPage {
   }
 
   reportsPage(name:string){
-    this.navCtrl.push('ReportMainPage',name);
+    this.navCtrl.push('ReportTabsPage',name);
   }
 
 }
