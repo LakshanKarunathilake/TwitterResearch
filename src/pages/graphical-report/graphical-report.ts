@@ -14,8 +14,12 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
   templateUrl: 'graphical-report.html',
 })
 export class GraphicalReportPage {
+  
+  user_data;
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {
+    this.user_data = navParams.data;
+    console.log(this.user_data)
   }
 
   ionViewDidLoad() {

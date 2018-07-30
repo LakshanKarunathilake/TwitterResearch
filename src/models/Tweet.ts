@@ -7,4 +7,5 @@ export interface Tweet {
     favourite_count:number;
     hash_tags: string[];
     img_url?: string;
+    doc_ID?: string;
 }

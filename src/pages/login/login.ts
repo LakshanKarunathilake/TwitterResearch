@@ -5,6 +5,7 @@ import { User } from '../../models/User';
 import { AngularFireAuth} from 'angularfire2/auth';
 import { FireStoreSetup } from '../../utilities/FirebaseWriting'
 import { AngularFirestore } from 'angularfire2/firestore';
+import { LoadingView } from '../../utilities/LoadingView';
 
 
 
@@ -25,20 +26,14 @@ import { AngularFirestore } from 'angularfire2/firestore';
 export class LoginPage {
 
   user = {} as User;
-  loading: Loading;
- 
+  loading:Loading;
 
   constructor(private navCtrl: NavController, public navParams: NavParams,private actControl:ActionSheetController,private afAuth:AngularFireAuth
-  ,private alertCtrl: AlertController,private loadingCtrl:LoadingController,private afs:AngularFirestore) {
+  ,private alertCtrl: AlertController,private loadingCtrl:LoadingController, private afs:AngularFirestore) {
     
   }
 
-  presentLoading(){
-    this.loading = this.loadingCtrl.create({
-      content: 'Please wait tille loads'
-    });
-    this.loading.present();
-  }
+ 
   
 
   presentActionSheet() {
@@ -80,7 +75,7 @@ export class LoginPage {
     console.log(val);
     this.user.document_ID = val['docID'];
     this.navCtrl.push("MainMenuPage",this.user).then(()=>{
-      this.loading.dismiss();
+      this.hideLoading();
     })
     
   }
@@ -90,13 +85,13 @@ export class LoginPage {
     try{
       const result = await  this.afAuth.auth.signInWithEmailAndPassword(user.email,user.password)
       .then((data)=>{
-        this.loading.dismiss();   
+        this.hideLoading(); 
         this.user.userId = data.user.uid;  
         this.presentActionSheet();
       });
       console.log(result);
     }catch(e){
-      this.loading.dismiss();
+      this.hideLoading();
       
       this.alertCtrl.create({
         message : e.message+`<br><br>
@@ -109,6 +104,17 @@ export class LoginPage {
    
     
   }
+
+  presentLoading(){
+    this.loading = this.loadingCtrl.create({
+      content: 'Please wait till loads'
+    });
+    this.loading.present();
+}
+
+hideLoading(){
+    this.loading.dismiss();
+}
 
  
 

@@ -48,8 +48,12 @@ export class ReportsPage {
     );    
   }
 
-  reportsPage(name:string){
-    this.navCtrl.push('ReportTabsPage',name);
+  reportsPage(name:string,twitter_id:string){
+    this.navCtrl.push('ReportTabsPage',
+    {
+      user_docID: this.user_loggedIn.document_ID,
+      twitter_docID: twitter_id
+    });
   }
 
 }

@@ -18,13 +18,21 @@ export class ReportTabsPage {
   tab1Root = "GraphicalReportPage";
   tab2Root = "DetailedReportPage";
  
+  user_data = {user_docID:'10',twitter_docID:'bc'}
   
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {
+    this.user_data = this.navParams.data;
+    
+    
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad ReportTabsPage');
+  }
+
+  tabClick(){
+    console.log('tab clicked')
   }
 
 }

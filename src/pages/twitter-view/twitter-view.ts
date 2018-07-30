@@ -45,6 +45,7 @@ export class TwitterViewPage {
 
   async subscribe(){
     var a =  await this.checkSuitability()
+    
     console.log(a);
     let b = Object.keys(a);
     console.log('b is',b.length);

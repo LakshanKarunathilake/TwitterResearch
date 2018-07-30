@@ -34,7 +34,7 @@
   <ion-item-divider><ion-title color="primary">Subscribed Accounts</ion-title></ion-item-divider>
   <ion-buttons padding>
     <ion-row *ngFor="let subscription of subscriptions | async">      
-        <button  style="padding-bottom: 5px;text-align: left" ion-button outline block (click)="reportsPage(subscription.name)" >{{subscription.name}}</button>
+        <button  style="padding-bottom: 5px;text-align: left" ion-button outline block (click)="reportsPage(subscription.name,subscription.doc_ID)" >{{subscription.name}}</button>
     
     </ion-row>
     
