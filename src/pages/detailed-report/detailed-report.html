@@ -18,6 +18,26 @@
 </ion-header>
 
 
-<ion-content padding>
+<ion-content>
+  <!-- <ion-list class="accordion-list" *ngFor="let tweet of tweets_observable | async;let i=index">
+    <ion-list-header no-padding>
+      <button ion-item  detail-none (click)="toggleGroup(i)">
+          <ion-icon color="success" item-right [name]="isGroupShown(i) ? 'arrow-dropdown' : 'arrow-dropright'"></ion-icon>
+      </button>
+     Lakshan{{i}}
+    </ion-list-header>
+    <ion-list-header *ngFor="let tweet of tweets_observable | async">laksa</ion-list-header>
+  </ion-list>  -->
+
+  <ion-card class="accordion-list" *ngFor="let tweet of tweets_observable | async;let i=index">
+    <ion-card-header>
+        Tweet {{i}}
+        <button ion-item detail-none (click)="toggleGroup(i)">
+            <ion-icon color="success" item-right [name]="isGroupShown(i) ? 'arrow-dropdown' : 'arrow-dropright'"></ion-icon>
+        </button>
+    </ion-card-header>
+    <p padding *ngIf="isGroupShown(i)">{{tweet.description}}</p>
+  </ion-card>
+
 
 </ion-content>
