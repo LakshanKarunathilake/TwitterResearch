@@ -1,11 +1,14 @@
 import { HttpClient } from '@angular/common/http';
 import { AngularFirestore } from '../../../node_modules/angularfire2/firestore';
+import { Platform } from 'ionic-angular';
 export class AnalysisToDB{
 
     private url = "/api";
 
-    constructor(private http:HttpClient,private afs:AngularFirestore){
-
+    constructor(private http:HttpClient,private afs:AngularFirestore,private platform:Platform){
+        if(this.platform.is("cordova")){      
+            this.url = "https://slitt-research-final.appspot.com";
+        }
     }
 
     callToVisionAPI(data){
@@ -37,8 +40,8 @@ export class AnalysisToDB{
     }
 
     async getSentiment(data){
-        let vision_api = this.url+"/get_sentiment/getSentiment"
-        await this.http.post(vision_api,{text: data.text}).subscribe(a=>{
+        let watson_api = this.url+"/get_sentiment/getSentiment"
+        await this.http.post(watson_api,{text: data.text}).subscribe(a=>{
             
             if(data.isTweet){
                 this.saveTweetSentiment(
@@ -75,13 +78,46 @@ export class AnalysisToDB{
     saveReplySentiment(data){
         const id = this.afs.createId();
         // data.doc.collection('ReplySentiment').doc(id).set(    
-        console.log('tweeet id',data.tweet_id)  
+        // console.log('tweeet id',data.tweet_id)  
         data.collection.doc(data.tweet_id).collection('ReplySentiments').doc(id).set(      
                data.descripiton_sentiment
             ,{merge:true}
         ).then(()=>{
             console.log('Watson Reply Sentiment Written')
         }) 
+    }
+
+    getReplySentiment(data){
+        console.log(data.tweet_id)
+        return new Promise((res,rej)=>{
+            data.doc.collection('WatsonData').doc(data.tweet_id).collection('ReplySentiments').valueChanges().subscribe(val=>{
+                let average_sentiment:number=0;
+                let average_anger:number=0;
+                let average_joy:number=0;
+                let average_fear:number=0;
+                
+                val.forEach(reply => {
+                    average_sentiment+= +reply.sentiment
+                    average_anger+= +reply.emotion.Anger;
+                    average_joy+= +reply.emotion.Joy;
+                    average_fear+= +reply.emotion.Fear;
+                });
+    
+                average_sentiment = (average_sentiment/val.length);
+                average_anger = (average_anger/val.length);
+                average_joy = (average_joy/val.length);
+                average_fear = (average_fear/val.length);
+                
+                res({
+                    average_sentiment,
+                    average_anger,
+                    average_joy,
+                    average_fear
+                })
+                 
+            })
+        })
+        
     }
 
     

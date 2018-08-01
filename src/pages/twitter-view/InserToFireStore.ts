@@ -13,7 +13,8 @@ export class InsertToFireStore{
 
     private url = "/api";
     Tweets: Observable<Tweet[]>;
-    
+    analysis= new AnalysisToDB(this.http,this.afs,this._platform);
+
     constructor(private afs: AngularFirestore,private http:HttpClient,private _platform:Platform){
         if(this._platform.is("cordova")){      
             this.url = "https://slitt-research-final.appspot.com";
@@ -21,12 +22,12 @@ export class InsertToFireStore{
         
     }
 
-    saveToCollection(data){
+    async saveToCollection(data){
         const id = this.afs.createId();
-        let analysis= new AnalysisToDB(this.http,this.afs);       
+               
         if(data.tweet.img_url != undefined){
                         
-            analysis.callToVisionAPI(
+            this.analysis.callToVisionAPI(
                 {
                     img_url:data.tweet.img_url,
                     tweet_id:data.subscription_id,
@@ -36,11 +37,11 @@ export class InsertToFireStore{
         }
         
     
-        data.collection.doc(data.subscription_id).collection('RawData').doc(id)
+        await data.collection.doc(data.subscription_id).collection('RawData').doc(id)
         .set(data.tweet,{merge:true})
         .then(()=>{
             console.log('Tweet Written Successfully');
-            analysis.getSentiment(
+            this.analysis.getSentiment(
                 {
                     text: data.tweet.full_text,
                     doc: data.collection.doc(data.subscription_id).collection('WatsonData').doc(id),
@@ -54,21 +55,33 @@ export class InsertToFireStore{
                     tweet_id:id,
                     subscriptionAcc_id:data.tweet.id_str,
                     screen_name:data.subscription_name,
-                    _analysis: analysis
+                    _analysis: this.analysis
                     }
-                );
+                )
             })
+            // .then(()=>{
+            //     analysis.getReplySentiment({
+            //         tweet_id:id
+            //     })
+            // })
+            // .then((res)=>{
+            //     console.log(res);
+            //     data.collection.doc(data.subscription_id).collection('WatsonData').doc(id).set(res,{merge:true})
+            // })
+            // .then(()=>{
+            //     console.log('Overall Tweet Written Success')
+            // })
             
             
 
         })
     }
 
-    ObtainData(data){
+    async ObtainData(data){
         console.log(data.name);
         let searchurl = this.url+"/get_tweet/"+data.name;
         console.log('searchURL',searchurl);
-        this.http.get<Observable<Tweet[]>>(searchurl)
+        await this.http.get<Observable<Tweet[]>>(searchurl)
         .subscribe(a=>{
             a.forEach(element => {
                 this.saveToCollection(
@@ -105,10 +118,10 @@ export class InsertToFireStore{
         })
     }
 
-    saveReplies(data){
+    async saveReplies(data){
         const id = this.afs.createId();
         
-        data.collection.doc(data.subscription_id).collection('RawData').doc(data.tweet_id).collection('Replies').doc(id)
+        await data.collection.doc(data.subscription_id).collection('RawData').doc(data.tweet_id).collection('Replies').doc(id)
         .set({reply:data.reply},{merge:true})
         .then(()=>{
             console.log('Reply saved')

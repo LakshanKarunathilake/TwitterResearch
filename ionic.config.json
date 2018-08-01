@@ -2,7 +2,7 @@
   "proxies": [
     {
       "path": "/api",
-      "proxyUrl": "https://slitt-research-final.appspot.com"
+      "proxyUrl": "https://slitt-research.appspot.com"
     }
   ],
   "name": "",
