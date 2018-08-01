@@ -50,7 +50,7 @@ export class SearchPage {
     this.presentLoading();
 
     if(this._platform.is("cordova")){      
-      this.url = "https://slitt-research-se.appspot.com";
+      this.url = "https://slitt-research-final.appspot.com";
     }
 
     try{

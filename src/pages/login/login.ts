@@ -87,7 +87,7 @@ export class LoginPage {
       .then((data)=>{
         this.hideLoading(); 
         this.user.userId = data.user.uid;  
-        this.presentActionSheet();
+        this.moveToHomePage();
       });
       console.log(result);
     }catch(e){

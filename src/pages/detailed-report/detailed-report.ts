@@ -35,10 +35,16 @@ export class DetailedReportPage {
     let a
     this.repo_gen.sentimentData(this.user_data)
     .then((bc)=>{
-      console.log('bc',bc)
+      let res = Object.keys(bc).map(key=>{
+        return [Number(key), bc[key] ];
+      });
+      console.log(res);
+     // console.log('bc',Object.keys(bc));
+      
+      
     })
     
-    console.log('a is',a)
+   
     
     
 

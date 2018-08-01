@@ -1,5 +1,6 @@
 import { AngularFirestore } from "angularfire2/firestore";
 import { Tweet_Sentiment } from "../../models/SentimentModels/Tweet_Sentiment";
+import { Observable } from "rxjs";
 
 export class DetailedReport{
     constructor(private afs:AngularFirestore){
@@ -7,15 +8,16 @@ export class DetailedReport{
     }
 
     subscription_doc;
-    tweets:Tweet_Sentiment[]=[]
-    dummy;
+    tweets:Tweet_Sentiment[]=new Array();
+    tweets_observable: Observable<Tweet_Sentiment[]>;
 
     async sentimentData(data){
         
         console.log('sentiment',data)
         this.subscription_doc = this.afs.collection('UserData').doc(data.user_docID).collection('TwitterSubscriptions').doc(data.twitter_docID)
         this.getTweets(data);
-        return this.tweets;
+        return this.tweets
+        
     }
 
     async getTweets(data){
@@ -39,7 +41,7 @@ export class DetailedReport{
         );
             
         })
-
+        
         
     }
 
@@ -48,18 +50,14 @@ export class DetailedReport{
             
             this.subscription_doc.collection('WatsonData').doc(data.tweet_id).valueChanges()
             .subscribe(a=>{     
-                // var ts:Tweet_Sentiment   
-                let tweet_sentiment  
-                tweet_sentiment =
-                    {
-                        description: data.description.full_text,
-                        sentiment: a
-                    }       
-                // console.log('text',data.description.full_text)
-                // ts.description = data.description.full_text;
-                // // ts.sentiment = a;
-                this.tweets.push(tweet_sentiment)              
+                var tweet_sentiment:Tweet_Sentiment = {};   
                 
+                tweet_sentiment.description = data.description.full_text;
+                tweet_sentiment.sentiment = a;                  
+                // this.tweets.push(tweet_sentiment);  
+                this.tweets[0] = tweet_sentiment 
+                      
+              
             })
     
      

@@ -16,7 +16,7 @@ export class InsertToFireStore{
     
     constructor(private afs: AngularFirestore,private http:HttpClient,private _platform:Platform){
         if(this._platform.is("cordova")){      
-            this.url = "https://slitt-research-se.appspot.com";
+            this.url = "https://slitt-research-final.appspot.com";
         }
         
     }
