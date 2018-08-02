@@ -33,7 +33,9 @@ export class DetailedReportPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams,private afs:AngularFirestore) {
     this.user_data = navParams.data;
+    console.log('user',this.user_data);
     this.generateReport();
+    
 
   }
 
