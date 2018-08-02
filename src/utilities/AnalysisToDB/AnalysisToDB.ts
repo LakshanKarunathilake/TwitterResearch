@@ -1,6 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { AngularFirestore } from '../../../node_modules/angularfire2/firestore';
 import { Platform } from 'ionic-angular';
+import { Observable } from 'rxjs';
+import { Tweet_Reply } from '../../models/Tweet_Reply';
 export class AnalysisToDB{
 
     private url = "/api";
@@ -11,10 +13,10 @@ export class AnalysisToDB{
         }
     }
 
-    callToVisionAPI(data){
+    async callToVisionAPI(data){
         let vision_api = this.url+"/get_image_analyse";
         
-        this.http.post(vision_api,{img_url:data.img_url}).subscribe(a=>{
+        await this.http.post(vision_api,{img_url:data.img_url}).subscribe(a=>{
            
             this.saveVisionData(               
                 {
@@ -47,13 +49,17 @@ export class AnalysisToDB{
                 this.saveTweetSentiment(
                     {
                         doc: data.doc,
-                        description_sentiment: a
+                        description_sentiment: a,
+                        tweet_id:data.tweet_id,
+                        screen_name: data.screen_name,
+                        collection: data.collection,
+                        id_str:data.id_str,
+                        subscription_id:data.subscription_id
+
                     }
                 );
-            }else{
-               
-                this.saveReplySentiment(
-                    
+            }else{               
+                this.saveReplySentiment(                    
                     {
                         doc: data.doc,
                         descripiton_sentiment: a,
@@ -72,7 +78,55 @@ export class AnalysisToDB{
             ,{merge:true}
         ).then(()=>{
             console.log('Watson Tweet Sentiment Written')
+            this.getReplies(
+                {
+                collection:data.collection,
+                subscription_id: data.subscription_id,
+                tweet_id:data.tweet_id,
+                id_str:data.id_str,
+                screen_name:data.screen_name,
+                
+                }
+            )
         })        
+    }
+    getReplies(data){
+        let retweet_api_call = this.url+"/get_replies/"+data.screen_name+"/"+data.id_str;
+        // console.log(retweet_api_call)
+        this.http.get<Observable<Tweet_Reply[]>>(retweet_api_call).
+        subscribe(a=>{
+            // console.log(a)
+            a.forEach(element => {
+                this.saveReplies(
+                    {
+                        collection: data.collection,
+                        subscription_id: data.subscription_id,
+                        tweet_id: data.tweet_id,
+                        reply: element,
+                        
+                    }
+                )                
+            });
+        })
+    }
+
+    async saveReplies(data){
+        const id = this.afs.createId();
+        
+        await data.collection.doc(data.subscription_id).collection('RawData').doc(data.tweet_id).collection('Replies').doc(id)
+        .set({reply:data.reply},{merge:true})
+        .then(()=>{
+            console.log('Reply saved')
+            this.getSentiment(
+                {
+                    text: data.reply,
+                    doc: data.collection.doc(data.subscription_id).collection('WatsonData').doc(id),
+                    collection: data.collection.doc(data.subscription_id).collection('WatsonData'),
+                    tweet_id:data.tweet_id
+                }
+            )            
+            
+        })
     }
 
     saveReplySentiment(data){
@@ -119,6 +173,25 @@ export class AnalysisToDB{
         })
         
     }
+
+    getKeyWords(data){
+        let watson_api_keywords = this.url+"/get_sentiment/getKeywords"
+        this.http.post(watson_api_keywords,{text: data.text}).subscribe(words=>{
+            this.saveKeywords({
+                words: words,
+                doc: data.doc,
+                // tweet_id: data.tweet_id
+            });
+        })
+    }
+
+    saveKeywords(data){
+        data.doc.set({KeyWords:data.words},{merge:true})
+        .then(()=>{
+            console.log('Twitter Keywords Written Successfully')
+        })
+    }
+   
 
     
 }

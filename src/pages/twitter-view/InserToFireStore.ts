@@ -13,7 +13,7 @@ export class InsertToFireStore{
 
     private url = "/api";
     Tweets: Observable<Tweet[]>;
-    analysis= new AnalysisToDB(this.http,this.afs,this._platform);
+    analysis = new AnalysisToDB(this.http,this.afs,this._platform);
 
     constructor(private afs: AngularFirestore,private http:HttpClient,private _platform:Platform){
         if(this._platform.is("cordova")){      
@@ -33,7 +33,7 @@ export class InsertToFireStore{
                     tweet_id:data.subscription_id,
                     collection: data.collection
                 }
-            );
+            )
         }
         
     
@@ -45,32 +45,20 @@ export class InsertToFireStore{
                 {
                     text: data.tweet.full_text,
                     doc: data.collection.doc(data.subscription_id).collection('WatsonData').doc(id),
-                    isTweet: true    
-                }
-            ).then(()=>{
-                this.getReplies(
-                    {
-                    collection:data.collection,
-                    subscription_id: data.subscription_id,
-                    tweet_id:id,
-                    subscriptionAcc_id:data.tweet.id_str,
+                    isTweet: true,
+                    tweet_id: id,                     
                     screen_name:data.subscription_name,
-                    _analysis: this.analysis
-                    }
-                )
+                    collection:data.collection,
+                    id_str:data.tweet.id_str,
+                    subscription_id:data.subscription_id
+                }
+            )
+            this.analysis.getKeyWords({
+                text: data.tweet.full_text,
+                // tweet_id:data.tweet_id,
+                doc: data.collection.doc(data.subscription_id).collection('WatsonData').doc(id)
             })
-            // .then(()=>{
-            //     analysis.getReplySentiment({
-            //         tweet_id:id
-            //     })
-            // })
-            // .then((res)=>{
-            //     console.log(res);
-            //     data.collection.doc(data.subscription_id).collection('WatsonData').doc(id).set(res,{merge:true})
-            // })
-            // .then(()=>{
-            //     console.log('Overall Tweet Written Success')
-            // })
+            
             
             
 
@@ -78,12 +66,15 @@ export class InsertToFireStore{
     }
 
     async ObtainData(data){
-        console.log(data.name);
+        
         let searchurl = this.url+"/get_tweet/"+data.name;
-        console.log('searchURL',searchurl);
+        
         await this.http.get<Observable<Tweet[]>>(searchurl)
         .subscribe(a=>{
-            a.forEach(element => {
+            let b = JSON.parse(JSON.stringify(a));
+            let index = 0
+            for (index = 0; index < b.length; index++) {
+                const element = a[index];
                 this.saveToCollection(
                     {
                         tweet:element,
@@ -92,9 +83,13 @@ export class InsertToFireStore{
                         subscription_name: data.name
                         
                     }
-                );                           
+                ) 
+                
             }
-        );
+           
+            
+            
+       
         })
     }
 
