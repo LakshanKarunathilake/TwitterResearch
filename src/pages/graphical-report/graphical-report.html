@@ -6,6 +6,8 @@
 -->
 <ion-header>
 
+  <script src="../node_modules/chart.js/dist/Chart.bundle.min.js"></script>
+
   <ion-navbar color="primary">
       <ion-buttons>
           <button ion-button menuToggle>
@@ -17,6 +19,44 @@
 
 </ion-header>
 
-<ion-content padding>
+
+<ion-content>
+
+  <ion-item-divider>
+      Likes/ Replies/ Retweets to Time
+  </ion-item-divider>
+
+  
+
+      <ion-card>
+        <!-- <ion-card-header>
+          Likes/ Replies/ Retweets to Time
+        </ion-card-header> -->
+        <ion-card-content>
+          <canvas #lineCanvas1></canvas>
+        </ion-card-content>
+      </ion-card>
+
+      <ion-item-divider>
+          Likes/ Replies/ Retweets to No of Words
+      </ion-item-divider>
+
+  <ion-card>
+    <!-- <ion-card-header>
+      Likes/ Replies/ Retweets to No of Words
+    </ion-card-header> -->
+    <ion-card-content>
+      <canvas #lineCanvas2></canvas>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-item-divider>
+      WordCloud
+  </ion-item-divider>
+
+
+
+
+
 
 </ion-content>
