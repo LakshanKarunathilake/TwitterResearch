@@ -5,7 +5,7 @@ import { User } from '../../models/User';
 import { AngularFireAuth} from 'angularfire2/auth';
 import { FireStoreSetup } from '../../utilities/FirebaseWriting'
 import { AngularFirestore } from 'angularfire2/firestore';
-import { LoadingView } from '../../utilities/LoadingView';
+
 
 
 
