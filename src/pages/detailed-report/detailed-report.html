@@ -18,6 +18,26 @@
 </ion-header>
 
 
-<ion-content padding>
+<ion-content>
+  
+  <ion-card  class="accordion-list" *ngFor="let tweet of tweets_observable;let i=index">
+    <ion-card-header style="text-decoration: underline" color="danger">
+        Tweet {{i}}
+        <button  (click)="toggleGroup(i)">
+        <ion-icon item-right color="primary"  [name]="isGroupShown(i) ? 'arrow-dropdown' : 'arrow-dropright'" [color]="isGroupShown(i) ? 'primary':''"></ion-icon>
+        </button>
+    </ion-card-header>
+    <p padding *ngIf="isGroupShown(i)">{{tweet.description}}</p>
+    <button ion-button clear block item-right color="primary" (click)="toggleSubGroup(i)">Tweet Description Sentiment</button>
+    <p *ngIf="isSubGroupShown(i)">{{tweet.reply_sentiment | json}}</p>
+    <div>
+      <ion-row>
+        <ion-col>
+
+        </ion-col>
+      </ion-row>
+    </div>
+  </ion-card>
+
 
 </ion-content>

@@ -4,6 +4,9 @@ import { DetailedReport } from './detailedRepoGen';
 import { AngularFirestore } from 'angularfire2/firestore';
 import { Tweet_Sentiment } from '../../models/SentimentModels/Tweet_Sentiment';
 
+import { Sentiment } from '../../models/SentimentModels/Sentiment';
+
+
 /**
  * Generated class for the DetailedReportPage page.
  *
@@ -21,29 +24,72 @@ export class DetailedReportPage {
   user_data;
   repo_gen = new DetailedReport(this.afs);
 
+  tweets_observable: Tweet_Sentiment[];
+
+  shownGroup = null;
+  subGroup = null;
+
+  paragraph = "test";
+
   constructor(public navCtrl: NavController, public navParams: NavParams,private afs:AngularFirestore) {
     this.user_data = navParams.data;
-    console.log('detailed',this.user_data)
     this.generateReport();
-  } 
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad DetailedReportPage');
   }
 
   generateReport(){
-    
-    this.a = this.repo_gen.sentimentData(this.user_data);
-  
-    this.a.forEach(obj=>{
-      console.log(obj);
-    });
-    this.repo_gen.getAllSentiment();
-    console.log(this.repo_gen.get_all_sentiment());
-    //console.log('length',a.length);
-    
-    //console.log(JSON.stringify(a)); 
-    
+    this.repo_gen.getTweets(this.user_data).then((data)=>{
+      let a ;
+      a = JSON.parse(JSON.stringify(data));
+      // this.tweets_observable.forEach(element => {
+      //   this.repo_gen.getReplySentiment({tweet_id:element.doc_id}).then((reply)=>{
+      //     element.reply_sentiment = reply
+      //   })
+      // });
+      this.tweets_observable = a.map(val=>{
+        val.description = val.description;
+        val.doc_id = val.doc_id;
+        val.sentiment = val.sentiment;
+        this.repo_gen.getReplySentiment({tweet_id:val.doc_id}).then((re:Sentiment)=>{
+          if(!isNaN(re.sentiment)){
+            this.repo_gen.saveAvgs({
+              tweet_id:val.doc_id,
+              avgs: re
+            })
+          }
+
+          val.reply_sentiment = re;
+        })
+
+        return val
+      })
+    })
+  }
+
+
+  toggleGroup(group){
+    if(this.isGroupShown(group)){
+      this.shownGroup = null;
+    }else{
+      this.shownGroup = group;
+    }
+  }
+
+  isGroupShown(group){
+    return this.shownGroup === group
+  }
+
+ toggleSubGroup(group){
+    if(this.isSubGroupShown(group)){
+      this.subGroup = null;
+    }else{
+      this.subGroup = group
+    }
+  }
+
+  isSubGroupShown(group){
+    return this.subGroup === group
+
   }
 
 }

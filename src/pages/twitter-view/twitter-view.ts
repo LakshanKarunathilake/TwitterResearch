@@ -79,7 +79,7 @@ export class TwitterViewPage {
     
   }
 
-  async checkSuitability(){
+  checkSuitability(){
     return new Promise((resolve,reject)=>{
       this.subscribed_accounts_collection =  this.afs.collection('UserData',ref=>{
         return ref.where('userID','==',this.user_loggedIn.userId)
@@ -89,6 +89,7 @@ export class TwitterViewPage {
       .subscribe(data=>{
         console.log(data);              
         this.subscribed_accounts = data;
+        console.log('type of ', typeof data)
         resolve(data);        
       })
       

@@ -13,7 +13,8 @@ export class InsertToFireStore{
 
     private url = "/api";
     Tweets: Observable<Tweet[]>;
-    
+    analysis = new AnalysisToDB(this.http,this.afs,this._platform);
+
     constructor(private afs: AngularFirestore,private http:HttpClient,private _platform:Platform){
         if(this._platform.is("cordova")){      
             this.url = "https://slitt-research-final.appspot.com";
@@ -21,56 +22,59 @@ export class InsertToFireStore{
         
     }
 
-    saveToCollection(data){
+    async saveToCollection(data){
         const id = this.afs.createId();
-        let analysis= new AnalysisToDB(this.http,this.afs);       
+               
         if(data.tweet.img_url != undefined){
                         
-            analysis.callToVisionAPI(
+            this.analysis.callToVisionAPI(
                 {
                     img_url:data.tweet.img_url,
                     tweet_id:data.subscription_id,
                     collection: data.collection
                 }
-            );
+            )
         }
         
     
-        data.collection.doc(data.subscription_id).collection('RawData').doc(id)
+        await data.collection.doc(data.subscription_id).collection('RawData').doc(id)
         .set(data.tweet,{merge:true})
         .then(()=>{
             console.log('Tweet Written Successfully');
-            analysis.getSentiment(
+            this.analysis.getSentiment(
                 {
                     text: data.tweet.full_text,
                     doc: data.collection.doc(data.subscription_id).collection('WatsonData').doc(id),
-                    isTweet: true    
-                }
-            ).then(()=>{
-                this.getReplies(
-                    {
-                    collection:data.collection,
-                    subscription_id: data.subscription_id,
-                    tweet_id:id,
-                    subscriptionAcc_id:data.tweet.id_str,
+                    isTweet: true,
+                    tweet_id: id,                     
                     screen_name:data.subscription_name,
-                    _analysis: analysis
-                    }
-                );
+                    collection:data.collection,
+                    id_str:data.tweet.id_str,
+                    subscription_id:data.subscription_id
+                }
+            )
+            this.analysis.getKeyWords({
+                text: data.tweet.full_text,
+                // tweet_id:data.tweet_id,
+                doc: data.collection.doc(data.subscription_id).collection('WatsonData').doc(id)
             })
+            
             
             
 
         })
     }
 
-    ObtainData(data){
-        console.log(data.name);
+    async ObtainData(data){
+        
         let searchurl = this.url+"/get_tweet/"+data.name;
-        console.log('searchURL',searchurl);
-        this.http.get<Observable<Tweet[]>>(searchurl)
+        
+        await this.http.get<Observable<Tweet[]>>(searchurl)
         .subscribe(a=>{
-            a.forEach(element => {
+            let b = JSON.parse(JSON.stringify(a));
+            let index = 0
+            for (index = 0; index < b.length; index++) {
+                const element = a[index];
                 this.saveToCollection(
                     {
                         tweet:element,
@@ -79,9 +83,13 @@ export class InsertToFireStore{
                         subscription_name: data.name
                         
                     }
-                );                           
+                ) 
+                
             }
-        );
+           
+            
+            
+       
         })
     }
 
@@ -105,10 +113,10 @@ export class InsertToFireStore{
         })
     }
 
-    saveReplies(data){
+    async saveReplies(data){
         const id = this.afs.createId();
         
-        data.collection.doc(data.subscription_id).collection('RawData').doc(data.tweet_id).collection('Replies').doc(id)
+        await data.collection.doc(data.subscription_id).collection('RawData').doc(data.tweet_id).collection('Replies').doc(id)
         .set({reply:data.reply},{merge:true})
         .then(()=>{
             console.log('Reply saved')
