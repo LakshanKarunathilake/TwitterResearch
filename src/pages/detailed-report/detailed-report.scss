@@ -2,5 +2,11 @@ page-detailed-report {
     .accordion-list{
         border-style: solid;
         border-width: 2px;
+        border-color:#303F9F;
+        border-radius:10px;
+    }
+    .sentiment-btn{
+        padding-left: 5px;
+        padding-right: 5px;
     }
 }

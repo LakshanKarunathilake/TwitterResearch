@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
 import { DetailedReport } from './detailedRepoGen';
 import { AngularFirestore } from 'angularfire2/firestore';
 import { Tweet_Sentiment } from '../../models/SentimentModels/Tweet_Sentiment';
 import { Sentiment } from '../../models/SentimentModels/Sentiment';
+
 
 /**
  * Generated class for the DetailedReportPage page.
@@ -25,11 +26,12 @@ export class DetailedReportPage {
   tweets_observable: Tweet_Sentiment[];
 
   shownGroup = null;
-  subGroup = null;
+  desctiptionSentiment = null;
+  replySentiment = null;
 
   paragraph = "test";
 
-  constructor(public navCtrl: NavController, public navParams: NavParams,private afs:AngularFirestore) {
+  constructor(public navCtrl: NavController, public navParams: NavParams,private afs:AngularFirestore,private alertCtrl:AlertController) {
     this.user_data = navParams.data; 
     this.generateReport();
     
@@ -55,8 +57,10 @@ export class DetailedReportPage {
               avgs: re
             })
           }
+          if(re ! = undefined){
+            val.reply_sentiment = re;
+          }
           
-          val.reply_sentiment = re;
         })
 
         return val
@@ -77,16 +81,45 @@ export class DetailedReportPage {
     return this.shownGroup === group
   }
 
- toggleSubGroup(group){
-    if(this.isSubGroupShown(group)){
-      this.subGroup = null;
+  toggleTweetSentiment(group,tweet){
+   if(tweet.sentiment != undefined){
+    if(this.isTweetSentimentShown(group)){
+      this.desctiptionSentiment = null;
     }else{
-      this.subGroup = group
+      this.desctiptionSentiment = group
     }
+   }else{
+     this.alertCtrl.create({
+       message: 'Sorry this Tweet Sentiment Have Neutral Analysis',
+       buttons: ['dismiss']
+     }).present();
+   }
+    
   }
 
-  isSubGroupShown(group){
-    return this.subGroup === group
+  isTweetSentimentShown(group){
+    return this.desctiptionSentiment === group
+   
+  }
+
+  toggleReplySentiment(group,tweet){
+    if(tweet.reply_sentiment != undefined){
+      if(this.isTweetSentimentShown(group)){
+        this.replySentiment = null;
+      }else{
+        this.replySentiment = group
+      }
+     }else{
+       this.alertCtrl.create({
+         message: 'Sorry this Tweet Sentiment Have Negutral Feedback or no replies',
+         buttons: ['dismiss']
+       }).present();
+     }
+  }
+
+  isReplySentimentShown(group){
+    return this.replySentiment === group
+   
   }
 
 }

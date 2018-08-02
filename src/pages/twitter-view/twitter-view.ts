@@ -7,8 +7,7 @@ import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/fires
 import { Fire_Twitter } from '../../models/Frie_Twitter';
 import { InsertToFireStore } from './InserToFireStore';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { Tweet } from '../../models/Tweet';
+
 
 
 
