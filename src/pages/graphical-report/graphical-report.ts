@@ -1,4 +1,4 @@
-import {Component, NgModule, ViewChild} from '@angular/core';
+import {Component, NgModule, ViewChild, CUSTOM_ELEMENTS_SCHEMA,NO_ERRORS_SCHEMA} from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { ChartsModule } from 'ng2-charts';
 import {Chart } from 'chart.js'
@@ -6,8 +6,11 @@ import {AngularFirestore} from "angularfire2/firestore";
 
 import { Graphical_Gen } from "./Graphical_Gen";
 
+import * as WordCloud from 'wordcloud';
+
 @NgModule({
-  imports:[ChartsModule]
+  imports:[ChartsModule],
+  schemas: [ CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA ]
 })
 
 /**
@@ -27,6 +30,8 @@ export class GraphicalReportPage {
   repo_gen = new Graphical_Gen(this.afs);
   user_data;
 
+  words_list = []; // hold word list for word cloud
+
   constructor(public navCtrl: NavController, public navParams: NavParams, private afs:AngularFirestore) {
     this.user_data = navParams.data;
     //console.log(this.user_data)
@@ -38,16 +43,25 @@ export class GraphicalReportPage {
   lineChart1: any;
   lineChart2: any;
 
-
+  list = [['foo', 25], ['bar', 36]];
 
 
   ionViewDidLoad() {
 
+
+
+    this.repo_gen.getChartKeyWords(this.user_data)
+      .then(data=>{
+        console.log(data);
+        this.processWord(data['keywords']);
+        WordCloud(document.getElementById('canvas'), { list: this.words_list } );
+      })
+
     this.repo_gen.getChartDataForWordCount(this.user_data)
         .then(data=>{
-          console.log(data);
+          //console.log(data);
 
-          
+
           // chart on word count
 
           this.lineChart2 = new Chart(this.lineCanvas2.nativeElement, {
@@ -84,12 +98,12 @@ export class GraphicalReportPage {
                   scaleFontSize: 10,
                   ticks: {
                     autoSkip: false,
-      
+
                   }
                 }]
               }
             }
-      
+
           });
 
         });
@@ -133,23 +147,17 @@ export class GraphicalReportPage {
                   scaleFontSize: 10,
                   ticks: {
                     autoSkip: false,
-      
+
                   }
                 }]
               }
             }
-      
+
           });
 
-       
+
 
       })
-
-    // this.repo_gen.getTweets(this.user_data).then(data=>{
-    //   console.log(data);
-    // });
-
-
 
     var chartColors = {
       red: 'rgb(255, 99, 132)',
@@ -160,6 +168,9 @@ export class GraphicalReportPage {
       purple: 'rgb(153, 102, 255)',
       grey: 'rgb(231,233,237)'
     };
+
+
+
 
     // this.lineChart1 = new Chart(this.lineCanvas1.nativeElement, {
 
@@ -203,6 +214,24 @@ export class GraphicalReportPage {
     // });
 
   }
+
+  processWord(originWords) {
+    // let content = 'How the Word Cloud Generator Cloud Works Works Works';
+    // let originWords = content.split(/\s+/g);
+
+    let counts:any[] = [];
+    originWords.forEach(function(x) { counts[x] = (counts[x] || 0)+1; });
+
+    Object.keys(counts).map(key=>{
+      //console.log(counts[key]);
+      //let valuetopush = { : counts[key]};
+      this.words_list.push([key, counts[key]+10]);
+    });
+
+    console.log(this.words_list);
+    //WordCloud(document.getElementById('canvas'), { list: this.words_list } );
+
+    }
 }
 
 
