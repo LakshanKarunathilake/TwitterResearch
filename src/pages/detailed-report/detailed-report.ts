@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { DetailedReport } from './detailedRepoGen';
 import { AngularFirestore } from 'angularfire2/firestore';
+import { Tweet_Sentiment } from '../../models/SentimentModels/Tweet_Sentiment';
 
 /**
  * Generated class for the DetailedReportPage page.
@@ -16,7 +17,7 @@ import { AngularFirestore } from 'angularfire2/firestore';
   templateUrl: 'detailed-report.html',
 })
 export class DetailedReportPage {
-  
+  a:Tweet_Sentiment[] = [];
   user_data;
   repo_gen = new DetailedReport(this.afs);
 
@@ -30,26 +31,19 @@ export class DetailedReportPage {
     console.log('ionViewDidLoad DetailedReportPage');
   }
 
-  async generateReport(){
+  generateReport(){
     
-    let a
-    this.repo_gen.sentimentData(this.user_data)
-    .then((bc)=>{
-      let res = Object.keys(bc).map(key=>{
-        return [Number(key), bc[key] ];
-      });
-      console.log(res);
-     // console.log('bc',Object.keys(bc));
-      
-      
-    })
+    this.a = this.repo_gen.sentimentData(this.user_data);
+  
+    this.a.forEach(obj=>{
+      console.log(obj);
+    });
+    this.repo_gen.getAllSentiment();
+    console.log(this.repo_gen.get_all_sentiment());
+    //console.log('length',a.length);
     
-   
+    //console.log(JSON.stringify(a)); 
     
-    
-
-    
-   
   }
 
 }

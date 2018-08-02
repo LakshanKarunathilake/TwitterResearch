@@ -4,14 +4,15 @@ import { Observable } from "rxjs";
 
 export class DetailedReport{
     constructor(private afs:AngularFirestore){
-
+        //this.getAllSentiment();
     }
 
     subscription_doc;
     tweets:Tweet_Sentiment[]=new Array();
     tweets_observable: Observable<Tweet_Sentiment[]>;
+    all_sentiment;
 
-    async sentimentData(data){
+    sentimentData(data){
         
         console.log('sentiment',data)
         this.subscription_doc = this.afs.collection('UserData').doc(data.user_docID).collection('TwitterSubscriptions').doc(data.twitter_docID)
@@ -20,11 +21,9 @@ export class DetailedReport{
         
     }
 
-    async getTweets(data){
+    getTweets(data){
          
-        await this.subscription_doc.collection('RawData').snapshotChanges()           
-
-        
+        this.subscription_doc.collection('RawData').snapshotChanges()             
         .subscribe( val =>{         
 
 
@@ -53,18 +52,27 @@ export class DetailedReport{
                 var tweet_sentiment:Tweet_Sentiment = {};   
                 
                 tweet_sentiment.description = data.description.full_text;
-                tweet_sentiment.sentiment = a;                  
-                // this.tweets.push(tweet_sentiment);  
-                this.tweets[0] = tweet_sentiment 
+                tweet_sentiment.sentiment = a;  
+                //let valuetopush = {'tweet':tweet_sentiment};            
+                 this.tweets.push(tweet_sentiment);  
+                // console.log(this.tweets);
+               // this.tweets[0] = tweet_sentiment 
                       
               
             })
     
-     
-       
-               
-        
-    
+    }
+
+    getAllSentiment(){
+        this.subscription_doc.collection('WatsonData').snapshotChanges()
+            .subscribe(val=>{
+                this.all_sentiment= val;
+                console.log(this.all_sentiment);
+            });
+    }
+
+    get_all_sentiment() {
+        return this.all_sentiment;
     }
 
    

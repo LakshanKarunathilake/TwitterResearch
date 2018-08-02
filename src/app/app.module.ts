@@ -9,6 +9,7 @@ import { AngularFireModule } from 'angularfire2';
 import { AngularFireAuthModule } from 'angularfire2/auth';
 import { AngularFirestoreModule } from "angularfire2/firestore";
 import { HttpClientModule} from '@angular/common/http';
+import { ChartsModule } from 'ng2-charts';
 
 
 
@@ -31,7 +32,8 @@ const config = {
     AngularFireAuthModule,
     AngularFireModule.initializeApp(config),
     AngularFirestoreModule,
-    HttpClientModule
+    HttpClientModule,
+    ChartsModule
 
   ],
   bootstrap: [IonicApp],
