@@ -19,95 +19,96 @@
 
 
 <ion-content>
+  <ion-item-divider (click)="sentimentAnalysisToggle()">Tweet Sentiment Analysis</ion-item-divider> 
+  <div *ngIf="sentimentAnalysisClicked">
+      <ion-card  class="accordion-list" *ngFor="let tweet of tweets_observable;let i=index">
+          <ion-card-header style="text-align: center;" >
+             
+              <button ion-button block (click)="toggleGroup(i)">
+                  Tweet {{i}}
+              </button>
+          </ion-card-header>
+          <p padding *ngIf="isGroupShown(i)">{{tweet.description}}</p>
+          <div class="sentiment-btn" align="center">
+              <button ion-button outline color="primary" (click)="toggleTweetSentiment(i,tweet)">Tweet Description Sentiment</button>
+          </div>
+          <div *ngIf="isTweetSentimentShown(i)">
+              
+            <ion-row>
+              <ion-col col-5>
+                Sentiment Score
+              </ion-col>
+              <ion-col col-7>
+                  {{tweet.sentiment.sentiment}}
+              </ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col col-5>
+                Anger Score
+              </ion-col>
+              <ion-col col-7>
+                  {{tweet.sentiment.Anger}}
+              </ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col col-5>
+                Fear Score
+              </ion-col>
+              <ion-col col-7>
+                  {{tweet.sentiment.Fear}}
+              </ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col col-5>
+                Joy Score
+              </ion-col>
+              <ion-col col-7>
+                  {{tweet.sentiment.Joy}}
+              </ion-col>
+            </ion-row>
+          </div>
+          <div class="sentiment-btn" align="center" style="padding-bottom: 5px;">
+              <button padding ion-button outline color="primary" (click)="toggleReplySentiment(i,tweet)">Tweet Description Sentiment</button>
+          </div>
+          
+          <div *ngIf="isReplySentimentShown(i)">
+              
+            <ion-row>
+              <ion-col col-5>
+                Sentiment Score
+              </ion-col>
+              <ion-col col-7>
+                  {{tweet.reply_sentiment.sentiment}}
+              </ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col col-5>
+                Anger Score
+              </ion-col>
+              <ion-col col-7>
+                  {{tweet.reply_sentiment.Anger}}
+              </ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col col-5>
+                Fear Score
+              </ion-col>
+              <ion-col col-7>
+                  {{tweet.reply_sentiment.Fear}}
+              </ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col col-5>
+                Joy Score
+              </ion-col>
+              <ion-col col-7>
+                  {{tweet.reply_sentiment.Joy}}
+              </ion-col>
+            </ion-row>
+          </div>
+        </ion-card>
+  </div>   
   
-  <ion-card  class="accordion-list" *ngFor="let tweet of tweets_observable;let i=index">
-    <ion-card-header style="text-align: center;" >
-       
-        <button ion-button block (click)="toggleGroup(i)">
-            Tweet {{i}}
-        </button>
-    </ion-card-header>
-    <p padding *ngIf="isGroupShown(i)">{{tweet.description}}</p>
-    <div class="sentiment-btn" align="center">
-        <button ion-button outline color="primary" (click)="toggleTweetSentiment(i,tweet)">Tweet Description Sentiment</button>
-    </div>
-    
-    
-    <div *ngIf="isTweetSentimentShown(i)">
-        
-      <ion-row>
-        <ion-col col-5>
-          Sentiment Score
-        </ion-col>
-        <ion-col col-7>
-            {{tweet.sentiment.sentiment}}
-        </ion-col>
-      </ion-row>
-      <ion-row>
-        <ion-col col-5>
-          Anger Score
-        </ion-col>
-        <ion-col col-7>
-            {{tweet.sentiment.Anger}}
-        </ion-col>
-      </ion-row>
-      <ion-row>
-        <ion-col col-5>
-          Fear Score
-        </ion-col>
-        <ion-col col-7>
-            {{tweet.sentiment.Fear}}
-        </ion-col>
-      </ion-row>
-      <ion-row>
-        <ion-col col-5>
-          Joy Score
-        </ion-col>
-        <ion-col col-7>
-            {{tweet.sentiment.Joy}}
-        </ion-col>
-      </ion-row>
-    </div>
-    <div class="sentiment-btn" align="center" style="padding-bottom: 5px;">
-        <button padding ion-button outline color="primary" (click)="toggleReplySentiment(i,tweet)">Tweet Description Sentiment</button>
-    </div>
-    
-    <div *ngIf="isReplySentimentShown(i)">
-        
-      <ion-row>
-        <ion-col col-5>
-          Sentiment Score
-        </ion-col>
-        <ion-col col-7>
-            {{tweet.reply_sentiment.sentiment}}
-        </ion-col>
-      </ion-row>
-      <ion-row>
-        <ion-col col-5>
-          Anger Score
-        </ion-col>
-        <ion-col col-7>
-            {{tweet.reply_sentiment.Anger}}
-        </ion-col>
-      </ion-row>
-      <ion-row>
-        <ion-col col-5>
-          Fear Score
-        </ion-col>
-        <ion-col col-7>
-            {{tweet.reply_sentiment.Fear}}
-        </ion-col>
-      </ion-row>
-      <ion-row>
-        <ion-col col-5>
-          Joy Score
-        </ion-col>
-        <ion-col col-7>
-            {{tweet.reply_sentiment.Joy}}
-        </ion-col>
-      </ion-row>
-    </div>
-  </ion-card>
 
 
 </ion-content>

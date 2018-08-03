@@ -30,6 +30,8 @@ export class DetailedReportPage {
   desctiptionSentiment = null;
   replySentiment = null;
 
+  sentimentAnalysisClicked=false;
+
   paragraph = "test";
 
 
@@ -128,6 +130,14 @@ export class DetailedReportPage {
     return this.replySentiment === group
    
 
+  }
+
+  sentimentAnalysisToggle(){
+    if(this.sentimentAnalysisClicked == true){
+      this.sentimentAnalysisClicked = false;
+    }else{
+      this.sentimentAnalysisClicked = true;
+    }
   }
 
 }
