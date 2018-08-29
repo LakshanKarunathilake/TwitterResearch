@@ -1,6 +1,5 @@
 import {AngularFirestore} from "angularfire2/firestore";
-import { resolveDefinition } from "../../../node_modules/@angular/core/src/view/util";
-import { async } from "../../../node_modules/rxjs/internal/scheduler/async";
+
 
 export class Graphical_Gen{
 
@@ -130,6 +129,40 @@ export class Graphical_Gen{
       });
 
 
+  }
+
+  getVisionColors(data){
+    return new Promise((resolve,reject)=>{
+      this.afs.collection("UserData").doc(data.user_docID).collection("TwitterSubscriptions").doc(data.twitter_docID).collection('VisionAnalysis').valueChanges()
+      .subscribe(chartTweets=>{
+        console.log('----Vision Subscribed----')
+        console.log(chartTweets)
+        let colors = [];
+        let labels = [];
+        let vals = [];
+        let index = 0
+        for (index = 0; index < chartTweets.length; index++) {
+          const element = chartTweets[index];
+          colors.push(element.dominant_colors);
+          labels.push(element.labels); 
+          vals.push(1);        
+        }
+
+        if(index == chartTweets.length){
+          console.log('-----Ending the loop----')
+          resolve({
+            colors: colors,
+            labels: labels,
+            vals: vals
+          })
+        }
+          
+          
+       
+      }
+      )
+    })
+   
   }
 
 }

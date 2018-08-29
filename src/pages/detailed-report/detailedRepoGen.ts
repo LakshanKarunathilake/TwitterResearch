@@ -12,10 +12,6 @@ export class DetailedReport{
 
     tweets_observable: Observable<Tweet_Sentiment[]>;
 
-
-
-
-
     getTweets(data){
 
         this.subscription_doc = this.afs.collection('UserData').doc(data.user_docID).collection('TwitterSubscriptions').doc(data.twitter_docID);

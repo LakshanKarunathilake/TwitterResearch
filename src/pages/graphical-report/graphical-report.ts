@@ -39,14 +39,18 @@ export class GraphicalReportPage {
 
   @ViewChild('lineCanvas1') lineCanvas1;
   @ViewChild('lineCanvas2') lineCanvas2;
+  @ViewChild('pieCanvas') pieCanvas;
 
   lineChart1: any;
   lineChart2: any;
+  pieChart: any;
 
   list = [['foo', 25], ['bar', 36]];
 
 
   ionViewDidLoad() {
+
+    this.generateVision();
 
 
 
@@ -119,14 +123,15 @@ export class GraphicalReportPage {
             type: 'line',
             data: {
               labels: data['created_arr'],
-              datasets: [{
-                label: '# of Favourites',
-                data: data['fav_count'],
-                borderColor: chartColors.red,
-                backgroundColor: chartColors.red,
-                fill: false,
-                borderWidth: 1
-              },
+              datasets: [
+                {
+                  label: '# of Favourites',
+                  data: data['fav_count'],
+                  borderColor: chartColors.red,
+                  backgroundColor: chartColors.red,
+                  fill: false,
+                  borderWidth: 1
+                },
                 {
                   label: '# of Retweets',
                   data: data['retweet_count'],
@@ -232,6 +237,38 @@ export class GraphicalReportPage {
     //WordCloud(document.getElementById('canvas'), { list: this.words_list } );
 
     }
+
+    generateVision(){
+      console.log('------Getting Vision Data------');
+      this.repo_gen.getVisionColors(this.user_data)
+      .then((res)=>{
+        let dataSet = JSON.parse(JSON.stringify(res))
+        this.pieChart = new Chart(this.pieCanvas.nativeElement,{
+          type: 'doughnut',
+                data: {
+                  labels: dataSet.colors,
+                  datasets: [
+                    {
+                      label: '# of Favourites',
+                      data:dataSet.vals,
+                     
+                      fill: false,
+                      borderColor: dataSet.colors,
+                      backgroundColor: dataSet.colors,
+                      borderWidth: 1
+                    }]
+                }
+    
+        })
+        
+      })
+    
+     
+
+     
+  }
 }
+
+
 
 
