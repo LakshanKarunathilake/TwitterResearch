@@ -9,7 +9,7 @@ export class AnalysisToDB{
 
     constructor(private http:HttpClient,private afs:AngularFirestore,private platform:Platform){
         if(this.platform.is("cordova")){      
-            this.url = "https://slitt-research-final.appspot.com";
+            this.url = localStorage.getItem('api_call');
         }
     }
 

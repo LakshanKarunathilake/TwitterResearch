@@ -76,6 +76,7 @@ export class LoginPage {
     this.user.document_ID = val['docID'];
     this.navCtrl.push("MainMenuPage",this.user).then(()=>{
       this.hideLoading();
+      localStorage.setItem('api_call',"https://slitt-research.appspot.com");
     })
     
   }

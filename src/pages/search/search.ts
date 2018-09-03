@@ -50,7 +50,7 @@ export class SearchPage {
     this.presentLoading();
 
     if(this._platform.is("cordova")){      
-      this.url = "https://slitt-research.appspot.com";
+      this.url = localStorage.getItem('api_call');
     }
 
     try{
