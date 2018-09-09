@@ -24,21 +24,29 @@ export class DetailedReport{
                     let twitter_sentiment:Tweet_Sentiment[]=[];
                     val.forEach(element => {
                         let ts:Tweet_Sentiment={};
-                        let sentiment:Sentiment= {}
+                        let sentiment:Sentiment={};
                         val2.forEach(element2 => {
 
                             if(element.payload.doc.id == element2.payload.doc.id){
 
                                 // console.log('description',element.payload.doc.data().full_text);
                                 // console.log('sentiment',element2.payload.doc.data().sentiment);
-                                // console.log('emotion',element2.payload.doc.data().emotion)
+                                 console.log('emotion',element2.payload.doc.data().emotion)
 
                                 ts.description = element.payload.doc.data().full_text;
                                 ts.doc_id = element2.payload.doc.id;
+                                
                                 sentiment.Anger = element2.payload.doc.data().emotion.Anger;
                                 sentiment.Fear = element2.payload.doc.data().emotion.Fear;
                                 sentiment.Joy = element2.payload.doc.data().emotion.Joy;
                                 sentiment.sentiment = element2.payload.doc.data().sentiment;
+
+                                sentiment.sentiment = Math.round(sentiment.sentiment * 100) / 100;
+                                sentiment.Anger = Math.round(sentiment.Anger * 100) / 100;
+                                sentiment.Fear = Math.round(sentiment.Fear * 100) / 100;
+                                sentiment.Joy = Math.round(sentiment.Joy * 100) / 100;
+                                
+
                                 ts.sentiment = sentiment;
                                 ts.reply_sentiment = element2.payload.doc.data().AVGS;
                                 console.log('adding to array')
@@ -79,6 +87,13 @@ export class DetailedReport{
                 sentiment.Anger = (average_anger/val.length);
                 sentiment.Joy = (average_joy/val.length);
                 sentiment.Fear = (average_fear/val.length);
+
+                //Rounding scores to two Decimal Points
+
+                sentiment.sentiment = Math.round(sentiment.sentiment * 100) / 100
+                sentiment.Anger = Math.round(sentiment.Anger * 100) / 100
+                sentiment.Joy = Math.round(sentiment.Joy * 100) / 100
+                sentiment.Fear = Math.round(sentiment.Fear * 100) / 100
 
                 res(sentiment)
 

@@ -20,15 +20,16 @@ import { Fire_Twitter } from '../../models/Frie_Twitter';
 })
 export class ReportsPage {
 
-  user_loggedIn: User;
+  // user_loggedIn: User;
 
   subscriptions_collection: AngularFirestoreCollection;
   subscriptions: Observable<any[]>;
   subscribes:Fire_Twitter[] = [];
 
+  user_doc_id = localStorage.getItem('user_doc_id')
 
   constructor(public navCtrl: NavController, public navParams: NavParams,private afs:AngularFirestore) {
-    this.user_loggedIn=this.navParams.data;
+    // this.user_loggedIn=this.navParams.data;
     this.loadSubscribedAccs();
   }
 
@@ -37,7 +38,8 @@ export class ReportsPage {
   }
 
   loadSubscribedAccs(){
-    this.subscriptions_collection = this.afs.collection('UserData').doc(this.user_loggedIn.document_ID).collection('TwitterSubscriptions');
+    
+    this.subscriptions_collection = this.afs.collection('UserData').doc(this.user_doc_id).collection('TwitterSubscriptions');
     this.subscriptions = this.subscriptions_collection.snapshotChanges().pipe(
       map(actions => actions.map(a => {
        
@@ -51,7 +53,7 @@ export class ReportsPage {
   reportsPage(name:string,twitter_id:string){
     this.navCtrl.push('ReportTabsPage',
     {
-      user_docID: this.user_loggedIn.document_ID,
+      user_docID: this.user_doc_id,
       twitter_docID: twitter_id
     });
   }

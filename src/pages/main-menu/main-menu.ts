@@ -30,13 +30,14 @@ export class MainMenuPage {
   ]
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {
-    this.user_loggedIn = navParams.data;
+    // this.user_loggedIn = navParams.data;
     console.log('-----Main MEnu----');
-    console.log(this.user_loggedIn.userId);
+    // console.log(this.user_loggedIn.userId);
   }
 
   onPage(page:Page){
-    this.nav.setRoot(page.component,this.user_loggedIn);
+    this.nav.setRoot(page.component);
+    // this.nav.setRoot(page.component,this.user_loggedIn);
   }
 
   

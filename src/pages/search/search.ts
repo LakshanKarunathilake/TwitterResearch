@@ -29,13 +29,14 @@ export class SearchPage {
   private url = "/api";
   loading:Loading;
 
-  user_loggedIn: User;
+  // user_loggedIn: User;
 
 	constructor(public navCtrl: NavController, public navParams: NavParams,private http:HttpClient,private _platform:Platform,
 		private loadingCtrl:LoadingController,private alertCtrl:AlertController) {
-     this.user_loggedIn = this.navParams.data;
+    //  this.user_loggedIn = this.navParams.data;
      console.log('----Seacrh Page-----');
-     console.log(this.user_loggedIn.userId);
+     
+    //  console.log(this.user_loggedIn.userId);   
  	}
 
 
@@ -90,7 +91,8 @@ export class SearchPage {
   // }
 
   viewPage(user: TwitterUser){
-    this.navCtrl.push('TwitterViewPage',{acc_data:user,logged_in:this.user_loggedIn});
+    // this.navCtrl.push('TwitterViewPage',{acc_data:user,logged_in:this.user_loggedIn});
+      this.navCtrl.push('TwitterViewPage',{acc_data:user});
   }
 
   presentLoading(){

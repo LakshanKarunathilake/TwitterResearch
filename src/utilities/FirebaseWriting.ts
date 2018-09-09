@@ -25,7 +25,7 @@ export class FireStoreSetup {
        const id = this.afs.createId();
        this.fire_users_collection.doc(id).set({
          name: this.user.email,
-         userID: this.user.userId
+         userID: this.user.user_id
        }).then(()=>{
          console.log('**User Created Successfull**');
        })
@@ -34,7 +34,7 @@ export class FireStoreSetup {
       getUserDetails(){
           return new Promise((resolve,reject)=>{
             this.fire_users_collection = this.afs.collection<Store_User>('UserData',ref => {
-                return ref.where('userID','==',this.user.userId);
+                return ref.where('userID','==',this.user.user_id);
               })
                this.fire_users_collection.snapshotChanges()
               .subscribe(data=>{

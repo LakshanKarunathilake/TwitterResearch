@@ -35,7 +35,7 @@ export class LoginPage {
 
  
   
-
+//Not presented to be used for permanen loging functionality
   presentActionSheet() {
     let actionSheet = this.actControl.create({
       title: 'Do you want to keep logged in',
@@ -69,12 +69,17 @@ export class LoginPage {
   }
   
   async moveToHomePage(){
+
     this.presentLoading();
+
     let fs= new FireStoreSetup(this.afs,this.user);
     var val =  await fs.subscribeThis();
+
     console.log(val);
     this.user.document_ID = val['docID'];
-    this.navCtrl.push("MainMenuPage",this.user).then(()=>{
+    localStorage.setItem('user_doc_id',val['docID']);
+    // this.navCtrl.setRoot("MainMenuPage",this.user).then(()=>{
+    this.navCtrl.setRoot("MainMenuPage").then(()=>{
       this.hideLoading();
       localStorage.setItem('api_call',"https://slitt-research.appspot.com");
     })
@@ -87,7 +92,8 @@ export class LoginPage {
       const result = await  this.afAuth.auth.signInWithEmailAndPassword(user.email,user.password)
       .then((data)=>{
         this.hideLoading(); 
-        this.user.userId = data.user.uid;  
+        this.user.user_id= data.user.uid; 
+        localStorage.setItem('user_id',data.user.uid) // Settting userID for future use
         this.moveToHomePage();
       });
       console.log(result);
@@ -111,11 +117,11 @@ export class LoginPage {
       content: 'Please wait till loads'
     });
     this.loading.present();
-}
+  }
 
-hideLoading(){
+  hideLoading(){
     this.loading.dismiss();
-}
+  }
 
  
 
