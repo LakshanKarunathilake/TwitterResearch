@@ -1,12 +1,21 @@
 page-detailed-report {
-    .accordion-list{
-        border-style: solid;
-        border-width: 2px;
-        border-color:#303F9F;
-        border-radius:10px;
-    }
-    .sentiment-btn{
-        padding-left: 5px;
-        padding-right: 5px;
-    }
+  .accordion-list {
+    border-style: solid;
+    border-width: 2px;
+    border-color: #303f9f;
+    border-radius: 10px;
+  }
+  .sentiment-btn {
+    padding-left: 5px;
+    padding-right: 5px;
+  }
+
+  #tweet_sentiment {
+    padding-left: 6%;
+  }
+
+  #tweet_sentiment_val {
+    padding-left: 6%;
+    color: #303f9f;
+  }
 }

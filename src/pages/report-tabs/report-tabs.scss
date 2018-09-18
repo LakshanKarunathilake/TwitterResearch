@@ -1,10 +1,8 @@
 page-report-tabs {
-
 }
-.ios, .md {
-
+.ios,
+.md {
   page-home {
-
     .scroll-content {
       background-color: map-get($colors, light);
     }
@@ -12,7 +10,5 @@ page-report-tabs {
     ion-card-header {
       font-weight: bold;
     }
-
   }
-
 }

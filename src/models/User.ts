@@ -1,7 +1,7 @@
 export interface User {
-    email: string;
-    password: string;
+    email?: string;
+    password?: string;
     confirmPassword?: string;
-    userId?: string;
+    user_id: string;
     document_ID?: string;
 }

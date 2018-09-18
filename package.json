@@ -1,6 +1,6 @@
 {
-  "name": "FaceBookReview",
-  "version": "0.0.1",
+  "name": "Trend Spotter",
+  "version": "1.0.0",
   "author": "Ionic Framework",
   "homepage": "http://ionicframework.com/",
   "private": true,
@@ -50,6 +50,7 @@
   },
   "devDependencies": {
     "@ionic/app-scripts": "3.1.10",
+    "@ionic/lab": "1.0.9",
     "typescript": "~2.6.2"
   },
   "description": "An Ionic project",

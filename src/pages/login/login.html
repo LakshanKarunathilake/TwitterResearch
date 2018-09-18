@@ -7,7 +7,7 @@
 <ion-header>
 
   <ion-navbar color='primary'>
-    <ion-title>Login</ion-title>
+    <ion-title>Welcome Back</ion-title>
   </ion-navbar>
 
 </ion-header>
@@ -15,39 +15,39 @@
 
 <ion-content padding>
   <div text-center id='login_label_div'>
-      
-      <div>
-          <ion-icon name="people" color="primary" style="font-size:700%"></ion-icon>
-      </div>
-      
+
+    <div>
+      <ion-icon name="people" color="primary" style="font-size:700%"></ion-icon>
+    </div>
+
   </div>
-  <div id='login_content'>   
-          <ion-item>
-            <ion-label floating>User Email</ion-label>
-            <ion-input type="email" [(ngModel)] ="user.email"></ion-input>
-          </ion-item>        
-          <ion-item>
-            <ion-label floating>Password</ion-label>
-            <ion-input type="password" [(ngModel)] ="user.password"></ion-input>
-          </ion-item>        
-          
+  <div id='login_content'>
+    <ion-item>
+      <ion-label floating>User Email</ion-label>
+      <ion-input type="email" [(ngModel)]="user.email"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label floating>Password</ion-label>
+      <ion-input type="password" [(ngModel)]="user.password"></ion-input>
+    </ion-item>
+
   </div>
   <div>
-    <ion-buttons style="padding-bottom: 5px;" >
-      <button round  block ion-button outline color='primary' (click)="clickLogin(user)">
+    <ion-buttons style="padding-bottom: 5px;">
+      <button round block ion-button outline color='primary' (click)="clickLogin(user)">
         Login
       </button>
     </ion-buttons>
-    <div text-center >
-        <ion-label color="danger">Or</ion-label>
-    </div> 
+    <div text-center>
+      <ion-label color="danger">Or</ion-label>
+    </div>
     <div>
-      <ion-buttons style="padding-bottom: 5px;padding-top: 5px;" >
-      <button round  block ion-button outline color='danger' (click)=" moveToSignupPage()">
-        Signup
-      </button>
-    </ion-buttons>     
-    </div>   
+      <ion-buttons style="padding-bottom: 5px;padding-top: 5px;">
+        <button round block ion-button outline color='danger' (click)=" moveToSignupPage()">
+          Signup
+        </button>
+      </ion-buttons>
+    </div>
   </div>
- 
+
 </ion-content>
