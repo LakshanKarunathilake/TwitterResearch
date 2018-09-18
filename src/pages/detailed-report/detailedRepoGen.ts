@@ -40,53 +40,36 @@ export class DetailedReport {
             .collection("WatsonData")
             .snapshotChanges()
             .subscribe(val2 => {
-              this.subscription_doc
-                .collection("VisionAnalysis")
-                .snapshotChanges()
-                .subscribe(val3 => {
-                  let twitter_sentiment: Tweet_Detail[] = [];
-                  val.forEach(element => {
-                    let ts: Tweet_Detail = {};
-                    let sentiment: Sentiment = {};
-                    val2.forEach(element2 => {
-                      val3.forEach(element3 => {
-                        if (element.payload.doc.id == element2.payload.doc.id) {
-                          ts.description = element.payload.doc.data().full_text;
-                          ts.doc_id = element2.payload.doc.id;
+              let twitter_sentiment: Tweet_Detail[] = [];
+              val.forEach(element => {
+                let ts: Tweet_Detail = {};
+                let sentiment: Sentiment = {};
+                val2.forEach(element2 => {
+                  if (element.payload.doc.id == element2.payload.doc.id) {
+                    ts.description = element.payload.doc.data().full_text;
+                    ts.doc_id = element2.payload.doc.id;
 
-                          sentiment.Anger = element2.payload.doc.data().emotion.Anger;
-                          sentiment.Fear = element2.payload.doc.data().emotion.Fear;
-                          sentiment.Joy = element2.payload.doc.data().emotion.Joy;
-                          sentiment.sentiment = element2.payload.doc.data().sentiment;
+                    sentiment.Anger = element2.payload.doc.data().emotion.Anger;
+                    sentiment.Fear = element2.payload.doc.data().emotion.Fear;
+                    sentiment.Joy = element2.payload.doc.data().emotion.Joy;
+                    sentiment.sentiment = element2.payload.doc.data().sentiment;
 
-                          sentiment.sentiment =
-                            Math.round(sentiment.sentiment * 100) / 100;
-                          sentiment.Anger =
-                            Math.round(sentiment.Anger * 100) / 100;
-                          sentiment.Fear =
-                            Math.round(sentiment.Fear * 100) / 100;
-                          sentiment.Joy = Math.round(sentiment.Joy * 100) / 100;
+                    sentiment.sentiment =
+                      Math.round(sentiment.sentiment * 100) / 100;
+                    sentiment.Anger = Math.round(sentiment.Anger * 100) / 100;
+                    sentiment.Fear = Math.round(sentiment.Fear * 100) / 100;
+                    sentiment.Joy = Math.round(sentiment.Joy * 100) / 100;
 
-                          ts.sentiment = sentiment;
-                          ts.reply_sentiment = element2.payload.doc.data().AVGS;
-                          console.log(
-                            "ading emotions to the array called tweet_sentiment"
-                          );
-
-                          //checking whether there is vision data relavant to this
-                          if (
-                            element.payload.doc.id === element3.payload.doc.id
-                          ) {
-                            ts.vision_analysis = element3.payload.doc.data();
-                            console.log("Vision Data", ts.vision_analysis);
-                          }
-                        }
-                      });
-                    });
-                    twitter_sentiment.push(ts);
-                  });
-                  resolve(twitter_sentiment);
+                    ts.sentiment = sentiment;
+                    ts.reply_sentiment = element2.payload.doc.data().AVGS;
+                    console.log(
+                      "ading emotions to the array called tweet_sentiment"
+                    );
+                  }
+                  twitter_sentiment.push(ts);
                 });
+              });
+              resolve(twitter_sentiment);
             });
         });
     });
@@ -95,44 +78,45 @@ export class DetailedReport {
   //  Obtaining the setiment data from the firebase
 
   getReplySentiment(data) {
-    return new Promise((res, rej) => {
-      console.log(data);
-      debugger;
-      let sentiment: Sentiment = {};
-      this.subscription_doc
-        .collection("WatsonData")
-        .doc(data.tweet_id)
-        .collection("ReplySentiments")
-        .valueChanges()
-        .subscribe(val => {
-          let average_sentiment: number = 0;
-          let average_anger: number = 0;
-          let average_joy: number = 0;
-          let average_fear: number = 0;
+    if (data.tweet_id != undefined) {
+      return new Promise((res, rej) => {
+        console.log(data);
+        let sentiment: Sentiment = {};
+        this.subscription_doc
+          .collection("WatsonData")
+          .doc(data.tweet_id)
+          .collection("ReplySentiments")
+          .valueChanges()
+          .subscribe(val => {
+            let average_sentiment: number = 0;
+            let average_anger: number = 0;
+            let average_joy: number = 0;
+            let average_fear: number = 0;
 
-          val.forEach(reply => {
-            average_sentiment += +reply.sentiment;
-            average_anger += +reply.emotion.Anger;
-            average_joy += +reply.emotion.Joy;
-            average_fear += +reply.emotion.Fear;
+            val.forEach(reply => {
+              average_sentiment += +reply.sentiment;
+              average_anger += +reply.emotion.Anger;
+              average_joy += +reply.emotion.Joy;
+              average_fear += +reply.emotion.Fear;
+            });
+
+            //Averaging sentiment values of replies
+            sentiment.sentiment = average_sentiment / val.length;
+            sentiment.Anger = average_anger / val.length;
+            sentiment.Joy = average_joy / val.length;
+            sentiment.Fear = average_fear / val.length;
+
+            //Rounding scores to two Decimal Points
+
+            sentiment.sentiment = Math.round(sentiment.sentiment * 100) / 100;
+            sentiment.Anger = Math.round(sentiment.Anger * 100) / 100;
+            sentiment.Joy = Math.round(sentiment.Joy * 100) / 100;
+            sentiment.Fear = Math.round(sentiment.Fear * 100) / 100;
+
+            res(sentiment);
           });
-
-          //Averaging sentiment values of replies
-          sentiment.sentiment = average_sentiment / val.length;
-          sentiment.Anger = average_anger / val.length;
-          sentiment.Joy = average_joy / val.length;
-          sentiment.Fear = average_fear / val.length;
-
-          //Rounding scores to two Decimal Points
-
-          sentiment.sentiment = Math.round(sentiment.sentiment * 100) / 100;
-          sentiment.Anger = Math.round(sentiment.Anger * 100) / 100;
-          sentiment.Joy = Math.round(sentiment.Joy * 100) / 100;
-          sentiment.Fear = Math.round(sentiment.Fear * 100) / 100;
-
-          res(sentiment);
-        });
-    });
+      });
+    }
   }
 
   saveAvgs(data) {

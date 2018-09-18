@@ -36,7 +36,7 @@ export class DetailedReportPage {
   desctiptionSentiment = null;
   replySentiment = null;
 
-  emojiiToggle = false;
+  emojiiToggle = true;
   emojiis = [];
 
   sentimentAnalysisClicked = false;
@@ -58,6 +58,7 @@ export class DetailedReportPage {
   generateReport() {
     this.presentLoading();
     this.repo_gen.getTweets(this.user_data).then(data => {
+      console.log("tweets", data);
       let array_of_tweets;
       array_of_tweets = JSON.parse(JSON.stringify(data));
 

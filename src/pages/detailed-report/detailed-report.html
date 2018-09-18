@@ -19,21 +19,21 @@
 
 
 <ion-content>
+  <!-- Sentiment Analysis Header in a single card -->
   <ion-item-divider (click)="sentimentAnalysisToggle()">Tweet Sentiment Analysis</ion-item-divider>
   <div *ngIf="sentimentAnalysisClicked">
     <ion-card class="accordion-list" *ngFor="let tweet of tweets_observable;let i=index">
       <ion-card-header style="text-align: center;">
-
         <button ion-button block (click)="toggleGroup(i)">
           Tweet {{i+1}}
         </button>
       </ion-card-header>
       <p padding *ngIf="isGroupShown(i)">{{tweet.description}}</p>
+      <!-- Tweet Description Sentiment Button -->
       <div class="sentiment-btn" align="center">
         <button ion-button outline color="primary" (click)="toggleTweetSentiment(i,tweet)">Tweet Description Sentiment</button>
       </div>
       <div *ngIf="isTweetSentimentShown(i)" style="padding-top: 5%; padding-bottom: 5%">
-
         <ion-row>
           <ion-col col-6 id="tweet_sentiment">
             Sentiment Score
@@ -77,11 +77,11 @@
         </ion-row>
       </div>
       <div class="sentiment-btn" align="center" style="padding-bottom: 5px;">
-        <button padding ion-button outline color="primary" (click)="toggleReplySentiment(i,tweet)">Tweet Reply Sentiment</button>
+        <button padding ion-button outline color="primary" (click)="toggleReplySentiment(i,tweet)">Tweet Reply
+          Sentiment</button>
       </div>
 
       <div *ngIf="isReplySentimentShown(i)" style="padding-bottom: 5%;padding-bottom: 5%">
-
         <ion-row>
           <ion-col col-6 id="tweet_sentiment">
             Sentiment Score
@@ -113,6 +113,22 @@
           <ion-col col-4 offset-1 id="tweet_sentiment_val" (click)="showEmojii(tweet.reply_sentiment.Joy,'sentiment')">
             {{tweet.reply_sentiment.Joy}}
           </ion-col>
+        </ion-row>
+      </div>
+      <!-- Additional Views -->
+      <div>
+        <ion-row>
+          <ion-col col-6>
+            <button ion-button outline style="text-align: center" color="primary">
+              <ion-icon name="color-palette" style="padding-right: 5px;"></ion-icon>Graph
+            </button>
+          </ion-col>
+          <ion-col col-6>
+            <button ion-button outline style="text-align: center" color="primary">
+              <ion-icon name="eye" style="padding-right: 5px;"></ion-icon>Vision
+            </button>
+          </ion-col>
+
         </ion-row>
       </div>
     </ion-card>
