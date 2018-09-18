@@ -65,8 +65,8 @@ export class DetailedReport {
                     console.log(
                       "ading emotions to the array called tweet_sentiment"
                     );
+                    twitter_sentiment.push(ts);
                   }
-                  twitter_sentiment.push(ts);
                 });
               });
               resolve(twitter_sentiment);
@@ -80,7 +80,6 @@ export class DetailedReport {
   getReplySentiment(data) {
     if (data.tweet_id != undefined) {
       return new Promise((res, rej) => {
-        console.log(data);
         let sentiment: Sentiment = {};
         this.subscription_doc
           .collection("WatsonData")
@@ -132,6 +131,18 @@ export class DetailedReport {
           console.log("Written Avg Data" + a);
         });
     });
+  }
+
+  // Generating values for the image Analysis Label
+
+  async getImageAnalysisData(doc_id: string) {
+    await this.subscription_doc
+      .collection("VisionAnalysis")
+      .doc(doc_id)
+      .valueChanges()
+      .subscribe(data => {
+        alert(JSON.stringify(data));
+      });
   }
 
   presentLoading() {

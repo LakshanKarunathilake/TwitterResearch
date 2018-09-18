@@ -151,6 +151,13 @@ export class DetailedReportPage {
     }
   }
 
+  viewVisionLabels(doc_id: string) {
+    this.presentLoading();
+    this.repo_gen.getImageAnalysisData(doc_id).then(() => {
+      this.hideLoading();
+    });
+  }
+
   showEmojii(score: number, type) {
     console.log("score is" + score);
     console.log("type is " + type);

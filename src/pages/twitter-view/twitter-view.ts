@@ -43,16 +43,11 @@ export class TwitterViewPage {
     private _platform: Platform
   ) {
     this.twitter_user = this.navParams.get("acc_data");
-    // this.user_loggedIn = this.navParams.get('logged_in');
-    // console.log('docID',this.user_loggedIn.document_ID);
   }
 
   async subscribe() {
     var a = await this.checkSuitability();
-
-    console.log(a);
     let b = Object.keys(a);
-    console.log("b is", b.length);
 
     if (b.length >= 0 && b.length < 5) {
       let exists: boolean = false;
@@ -87,8 +82,6 @@ export class TwitterViewPage {
   checkSuitability() {
     let user_id = localStorage.getItem("user_id");
     let user_doc_id = localStorage.getItem("user_doc_id");
-    console.log("user_id", user_id);
-    console.log("user_doc_id", user_doc_id);
 
     return new Promise((resolve, reject) => {
       this.subscribed_accounts_collection = this.afs
@@ -99,9 +92,7 @@ export class TwitterViewPage {
         .collection("TwitterSubscriptions");
 
       this.subscribed_accounts_collection.valueChanges().subscribe(data => {
-        console.log(data);
         this.subscribed_accounts = data;
-        console.log("type of ", typeof data);
         resolve(data);
       });
     });
