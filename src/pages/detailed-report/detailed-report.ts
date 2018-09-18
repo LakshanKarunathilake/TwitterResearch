@@ -1,3 +1,4 @@
+import { Tweet_Detail } from "./../../models/SentimentModels/Tweet_Detail";
 import { Observable } from "rxjs/Observable";
 import { Component ,ViewChild } from "@angular/core";
 import {
@@ -10,10 +11,13 @@ import {
 } from "ionic-angular";
 import { DetailedReport } from "./detailedRepoGen";
 import { AngularFirestore } from "angularfire2/firestore";
+<<<<<<< HEAD
 import { Tweet_Sentiment } from "../../models/SentimentModels/Tweet_Sentiment";
 
 import {Chart } from 'chart.js'
 
+=======
+>>>>>>> 53674cc270f29fa68db6ae3ec78a1cd7fb2e736d
 import { Sentiment } from "../../models/SentimentModels/Sentiment";
 
 /**
@@ -29,18 +33,18 @@ import { Sentiment } from "../../models/SentimentModels/Sentiment";
   templateUrl: "detailed-report.html"
 })
 export class DetailedReportPage {
-  a: Tweet_Sentiment[] = [];
+  a: Tweet_Detail[] = [];
   user_data;
   repo_gen = new DetailedReport(this.afs, this.loadingCtrl);
 
-  tweets_observable: Observable<Tweet_Sentiment[]>;
+  tweets_observable: Observable<Tweet_Detail[]>;
 
   shownGroup = null;
   desctiptionSentiment = null;
   replySentiment = null;
   barchartData = [];
 
-  emojiiToggle = false;
+  emojiiToggle = true;
   emojiis = [];
 
   sentimentAnalysisClicked = false;
@@ -64,9 +68,11 @@ export class DetailedReportPage {
   generateReport() {
     this.presentLoading();
     this.repo_gen.getTweets(this.user_data).then(data => {
+      console.log("tweets", data);
       let array_of_tweets;
       array_of_tweets = JSON.parse(JSON.stringify(data));
 
+<<<<<<< HEAD
       console.log("array of tweets", array_of_tweets);
       let x = 0;
 this.barchartData['datasets'] = [];
@@ -147,6 +153,8 @@ this.barchartData['datasets'][2]['backgroundColor'] = backgroundColorBlue;
       this.drawBarChart(this.barchartData);
 
 
+=======
+>>>>>>> 53674cc270f29fa68db6ae3ec78a1cd7fb2e736d
       this.tweets_observable = array_of_tweets.map(val => {
         val.description = val.description;
         val.doc_id = val.doc_id;

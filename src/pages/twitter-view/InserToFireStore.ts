@@ -46,6 +46,7 @@ export class InsertToFireStore {
     const id = this.afs.createId();
 
     if (data.tweet.img_url != undefined) {
+      console.log("Tweet have an image");
       this.analysis.callToVisionAPI({
         img_url: data.tweet.img_url,
         // tweet_id: data.subscription_id,

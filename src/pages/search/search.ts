@@ -112,7 +112,7 @@ export class SearchPage {
 
   presentLoading() {
     this.loading = this.loadingCtrl.create({
-      content: "Please wait tille loads"
+      content: "Please wait I am searching for you...."
     });
     this.loading.present();
   }
