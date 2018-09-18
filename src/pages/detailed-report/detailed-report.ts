@@ -11,13 +11,10 @@ import {
 } from "ionic-angular";
 import { DetailedReport } from "./detailedRepoGen";
 import { AngularFirestore } from "angularfire2/firestore";
-<<<<<<< HEAD
 import { Tweet_Sentiment } from "../../models/SentimentModels/Tweet_Sentiment";
 
 import {Chart } from 'chart.js'
 
-=======
->>>>>>> 53674cc270f29fa68db6ae3ec78a1cd7fb2e736d
 import { Sentiment } from "../../models/SentimentModels/Sentiment";
 
 /**
@@ -72,7 +69,6 @@ export class DetailedReportPage {
       let array_of_tweets;
       array_of_tweets = JSON.parse(JSON.stringify(data));
 
-<<<<<<< HEAD
       console.log("array of tweets", array_of_tweets);
       let x = 0;
 this.barchartData['datasets'] = [];
@@ -91,31 +87,18 @@ this.barchartData['datasets'][0]['data']=[];
 this.barchartData['datasets'][1]['data']=[];
 this.barchartData['datasets'][2]['data']=[];
 
-let backgroundColorRed = [
-                        'rgba(255, 0, 0, 0.3)',
-                        'rgba(255, 0, 0, 0.3)',
-                        'rgba(255, 0, 0, 0.3)'
-                      ];
-                      let backgroundColorGreen = [
-                        'rgba(0, 255, 0, 0.3)',
-                        'rgba(0, 255, 0, 0.3)',
-                        'rgba(0, 255, 0, 0.3)'
-                      ];
+let backgroundColorRed ='rgba(255, 0, 0, 0.3)';
+                        
+                      let backgroundColorGreen = 'rgba(0, 255, 0, 0.3)';
 
-                      let backgroundColorBlue = [
-                        'rgba(0, 0, 255, 0.3)',
-                        'rgba(0, 0, 255, 0.3)',
-                        'rgba(0, 0, 255, 0.3)'
-                      ];
+                      let backgroundColorBlue = 'rgba(0, 0, 255, 0.3)';
 
 this.barchartData['datasets'][0]['backgroundColor'] = [];
 this.barchartData['datasets'][1]['backgroundColor'] = [];
 this.barchartData['datasets'][2]['backgroundColor'] = [];
 
 
-this.barchartData['datasets'][0]['backgroundColor'] = backgroundColorRed;
-this.barchartData['datasets'][1]['backgroundColor'] = backgroundColorGreen;
-this.barchartData['datasets'][2]['backgroundColor'] = backgroundColorBlue;
+
 
       for(let x =0;x<array_of_tweets.length; x++){
         // this.barchartData['labels'][x]=[];
@@ -131,6 +114,14 @@ this.barchartData['datasets'][2]['backgroundColor'] = backgroundColorBlue;
         this.barchartData['datasets'][0]['label'] = 'Anger ';
         this.barchartData['datasets'][1]['label'] = 'Fear ';
         this.barchartData['datasets'][2]['label'] = 'Joy ';
+
+        this.barchartData['datasets'][0]['backgroundColor'][x] = [];
+        this.barchartData['datasets'][1]['backgroundColor'][x] = [];
+        this.barchartData['datasets'][2]['backgroundColor'][x] = [];
+
+        this.barchartData['datasets'][0]['backgroundColor'][x] = backgroundColorRed;
+        this.barchartData['datasets'][1]['backgroundColor'][x] = backgroundColorGreen;
+        this.barchartData['datasets'][2]['backgroundColor'][x] = backgroundColorBlue;
 
         // this.barchartData['datasets'][0]=[];
         // this.barchartData['datasets'][1]=[];
@@ -153,8 +144,6 @@ this.barchartData['datasets'][2]['backgroundColor'] = backgroundColorBlue;
       this.drawBarChart(this.barchartData);
 
 
-=======
->>>>>>> 53674cc270f29fa68db6ae3ec78a1cd7fb2e736d
       this.tweets_observable = array_of_tweets.map(val => {
         val.description = val.description;
         val.doc_id = val.doc_id;
