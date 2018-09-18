@@ -3,7 +3,7 @@ import {
   AngularFirestore,
   AngularFirestoreDocument
 } from "angularfire2/firestore";
-import { Tweet_Sentiment } from "../../models/SentimentModels/Tweet_Sentiment";
+import { Tweet_Detail } from "../../models/SentimentModels/Tweet_Sentiment";
 import { Observable } from "rxjs";
 import { Sentiment } from "../../models/SentimentModels/Sentiment";
 
@@ -19,7 +19,9 @@ export class DetailedReport {
 
   subscription_doc: AngularFirestoreDocument;
 
-  tweets_observable: Observable<Tweet_Sentiment[]>;
+  tweets_observable: Observable<Tweet_Detail[]>;
+
+  /*Preparing the dataset ready for the visual aid of statistical records*/
 
   getTweets(data) {
     this.subscription_doc = this.afs
@@ -37,37 +39,53 @@ export class DetailedReport {
             .collection("WatsonData")
             .snapshotChanges()
             .subscribe(val2 => {
-              let twitter_sentiment: Tweet_Sentiment[] = [];
-              val.forEach(element => {
-                let ts: Tweet_Sentiment = {};
-                let sentiment: Sentiment = {};
-                val2.forEach(element2 => {
-                  if (element.payload.doc.id == element2.payload.doc.id) {
-                    ts.description = element.payload.doc.data().full_text;
-                    ts.doc_id = element2.payload.doc.id;
+              let imageData_doc = this.subscription_doc
+                .collection("VisionAnalysis")
+                .snapshotChanges()
+                .subscribe(val3 => {
+                  let twitter_sentiment: Tweet_Detail[] = [];
+                  val.forEach(element => {
+                    let ts: Tweet_Detail = {};
+                    let sentiment: Sentiment = {};
+                    val2.forEach(element2 => {
+                      val3.forEach(element3 => {
+                        if (element.payload.doc.id == element2.payload.doc.id) {
+                          ts.description = element.payload.doc.data().full_text;
+                          ts.doc_id = element2.payload.doc.id;
 
-                    sentiment.Anger = element2.payload.doc.data().emotion.Anger;
-                    sentiment.Fear = element2.payload.doc.data().emotion.Fear;
-                    sentiment.Joy = element2.payload.doc.data().emotion.Joy;
-                    sentiment.sentiment = element2.payload.doc.data().sentiment;
+                          sentiment.Anger = element2.payload.doc.data().emotion.Anger;
+                          sentiment.Fear = element2.payload.doc.data().emotion.Fear;
+                          sentiment.Joy = element2.payload.doc.data().emotion.Joy;
+                          sentiment.sentiment = element2.payload.doc.data().sentiment;
 
-                    sentiment.sentiment =
-                      Math.round(sentiment.sentiment * 100) / 100;
-                    sentiment.Anger = Math.round(sentiment.Anger * 100) / 100;
-                    sentiment.Fear = Math.round(sentiment.Fear * 100) / 100;
-                    sentiment.Joy = Math.round(sentiment.Joy * 100) / 100;
+                          sentiment.sentiment =
+                            Math.round(sentiment.sentiment * 100) / 100;
+                          sentiment.Anger =
+                            Math.round(sentiment.Anger * 100) / 100;
+                          sentiment.Fear =
+                            Math.round(sentiment.Fear * 100) / 100;
+                          sentiment.Joy = Math.round(sentiment.Joy * 100) / 100;
 
-                    ts.sentiment = sentiment;
-                    ts.reply_sentiment = element2.payload.doc.data().AVGS;
-                    console.log(
-                      "ading emotions to the array called tweet_sentiment"
-                    );
-                  }
+                          ts.sentiment = sentiment;
+                          ts.reply_sentiment = element2.payload.doc.data().AVGS;
+                          console.log(
+                            "ading emotions to the array called tweet_sentiment"
+                          );
+
+                          //checking whether there is vision data relavant to this
+                          if (
+                            element.payload.doc.id === element3.payload.doc.id
+                          ) {
+                            ts.vision_analysis = element3.payload.doc.data();
+                            console.log("Vision Data", ts.vision_analysis);
+                          }
+                        }
+                      });
+                    });
+                    twitter_sentiment.push(ts);
+                  });
+                  resolve(twitter_sentiment);
                 });
-                twitter_sentiment.push(ts);
-              });
-
-              resolve(twitter_sentiment);
             });
         });
     });

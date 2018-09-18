@@ -38,7 +38,7 @@
           <ion-col col-6 id="tweet_sentiment">
             Sentiment Score
           </ion-col>
-          <ion-col col-4 offset-1 id="tweet_sentiment_val" (click)="showEmojii(tweet.sentiment.sentiment,'sentiment')">
+          <ion-col col-4 offset-1 id="tweet_sentiment_val">
             <span>{{tweet.sentiment.sentiment}}</span>
           </ion-col>
         </ion-row>
@@ -47,10 +47,9 @@
             Anger Score
           </ion-col>
           <ion-col col-4 offset-1 id="tweet_sentiment_val" (click)="showEmojii(tweet.sentiment.Anger,'Anger')">
-            <span>{{tweet.sentiment.Anger}}</span>
-            <div>
-              <label>asasa</label>
-              <label>asasa</label>
+            <span *ngIf="emojiiToggle">{{tweet.sentiment.Anger}}</span>
+            <div *ngIf="emojiiToggle">
+              <label *ngFor="let emojii of emojiis">{{emojii}}</label>
             </div>
           </ion-col>
         </ion-row>
@@ -59,7 +58,10 @@
             Fear Score
           </ion-col>
           <ion-col col-4 offset-1 id="tweet_sentiment_val" (click)="showEmojii(tweet.sentiment.Fear,'Fear')">
-            {{tweet.sentiment.Fear}}
+            <span *ngIf="emojiiToggle">{{tweet.sentiment.Fear}}</span>
+            <div *ngIf="emojiiToggle">
+              <label *ngFor="let emojii of emojiis">{{emojii}}</label>
+            </div>
           </ion-col>
         </ion-row>
         <ion-row>
@@ -67,7 +69,10 @@
             Joy Score
           </ion-col>
           <ion-col col-4 offset-1 id="tweet_sentiment_val" (click)="showEmojii(tweet.sentiment.Joy,'Joy')">
-            {{tweet.sentiment.Joy}}
+            <span *ngIf="emojiiToggle">{{tweet.sentiment.Joy}}</span>
+            <div *ngIf="emojiiToggle">
+              <label *ngFor="let emojii of emojiis">{{emojii}}</label>
+            </div>
           </ion-col>
         </ion-row>
       </div>

@@ -38,6 +38,7 @@ export class DetailedReportPage {
   replySentiment = null;
 
   emojiiToggle = false;
+  emojiis = [];
 
   sentimentAnalysisClicked = false;
 
@@ -151,14 +152,38 @@ export class DetailedReportPage {
     }
   }
 
-  showEmojii(score, type) {
+  showEmojii(score: number, type) {
     console.log("score is" + score);
     console.log("type is " + type);
 
-    
+    this.emojiis = [];
+
+    if (this.emojiiToggle == true) {
+      this.emojiiToggle = false;
+    } else {
+      this.emojiiToggle = true;
+    }
+
+    // let number_of_emojiss = 2 * Math.round((score * 10) / 2);
+    // console.log("After Rounding", number_of_emojiss);
+
+    // for (let index = 0; index < number_of_emojiss; index++) {
+    //   switch (type) {
+    //     case "Anger":
+    //       this.emojiis.push("😡");
+    //       break;
+    //     case "Joy":
+    //       this.emojiis.push("😊");
+    //       break;
+    //     case "Fear":
+    //       this.emojiis.push("😨");
+    //       break;
+    //     default:
+    //       break;
+    //   }
+    // }
   }
 
-  
   presentLoading() {
     this.loading = this.loadingCtrl.create({
       content: "Please wait till Data Loads"

@@ -50,7 +50,6 @@ export class UserSettingsPage {
   }
 
   loadSubscribedAccs() {
-    let user_id = localStorage.getItem("user_id");
     let user_doc_id = localStorage.getItem("user_doc_id");
     this.subscriptions_collection = this.afs
       .collection("UserData")
