@@ -1,3 +1,4 @@
+import { Tweet_Detail } from "./../../models/SentimentModels/Tweet_Detail";
 import { Observable } from "rxjs/Observable";
 import { Component } from "@angular/core";
 import {
@@ -10,8 +11,6 @@ import {
 } from "ionic-angular";
 import { DetailedReport } from "./detailedRepoGen";
 import { AngularFirestore } from "angularfire2/firestore";
-import { Tweet_Sentiment } from "../../models/SentimentModels/Tweet_Sentiment";
-
 import { Sentiment } from "../../models/SentimentModels/Sentiment";
 
 /**
@@ -27,11 +26,11 @@ import { Sentiment } from "../../models/SentimentModels/Sentiment";
   templateUrl: "detailed-report.html"
 })
 export class DetailedReportPage {
-  a: Tweet_Sentiment[] = [];
+  a: Tweet_Detail[] = [];
   user_data;
   repo_gen = new DetailedReport(this.afs, this.loadingCtrl);
 
-  tweets_observable: Observable<Tweet_Sentiment[]>;
+  tweets_observable: Observable<Tweet_Detail[]>;
 
   shownGroup = null;
   desctiptionSentiment = null;
@@ -62,7 +61,6 @@ export class DetailedReportPage {
       let array_of_tweets;
       array_of_tweets = JSON.parse(JSON.stringify(data));
 
-      console.log("array of tweets", array_of_tweets);
       this.tweets_observable = array_of_tweets.map(val => {
         val.description = val.description;
         val.doc_id = val.doc_id;

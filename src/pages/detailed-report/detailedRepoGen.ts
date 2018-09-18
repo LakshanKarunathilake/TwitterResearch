@@ -1,9 +1,10 @@
+import { Tweet_Detail } from "./../../models/SentimentModels/Tweet_Detail";
 import { LoadingController, Loading } from "ionic-angular";
 import {
   AngularFirestore,
   AngularFirestoreDocument
 } from "angularfire2/firestore";
-import { Tweet_Detail } from "../../models/SentimentModels/Tweet_Sentiment";
+
 import { Observable } from "rxjs";
 import { Sentiment } from "../../models/SentimentModels/Sentiment";
 
@@ -39,7 +40,7 @@ export class DetailedReport {
             .collection("WatsonData")
             .snapshotChanges()
             .subscribe(val2 => {
-              let imageData_doc = this.subscription_doc
+              this.subscription_doc
                 .collection("VisionAnalysis")
                 .snapshotChanges()
                 .subscribe(val3 => {
@@ -95,6 +96,8 @@ export class DetailedReport {
 
   getReplySentiment(data) {
     return new Promise((res, rej) => {
+      console.log(data);
+      debugger;
       let sentiment: Sentiment = {};
       this.subscription_doc
         .collection("WatsonData")
