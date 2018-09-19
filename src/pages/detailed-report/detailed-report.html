@@ -19,9 +19,21 @@
 
 
 <ion-content>
-  <!-- Sentiment Analysis Header in a single card -->
+
+  <ion-card>
+    <ion-card-content>
+      <canvas #BarCanvas></canvas>
+    </ion-card-content>
+  </ion-card>
+
+
   <ion-item-divider (click)="sentimentAnalysisToggle()">Tweet Sentiment Analysis</ion-item-divider>
+
+
   <div *ngIf="sentimentAnalysisClicked">
+
+
+
     <ion-card class="accordion-list" *ngFor="let tweet of tweets_observable;let i=index">
       <ion-card-header style="text-align: center;">
         <button ion-button block (click)="toggleGroup(i)">
