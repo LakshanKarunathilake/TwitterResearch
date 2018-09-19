@@ -80,6 +80,12 @@
 
           </ion-col>
         </ion-row>
+
+        <!-- Using for Individual Bar Chart -->
+        <!-- <div>
+          <canvas #SentimentCanvas{{i}}></canvas>
+        </div> -->
+
       </div>
       <div class="sentiment-btn" align="center" style="padding-bottom: 5px;">
         <button padding ion-button outline color="primary" (click)="toggleReplySentiment(i,tweet)">Tweet Reply
@@ -135,6 +141,9 @@
           </ion-col>
 
         </ion-row>
+      </div>
+      <div style="margin: 5px 5px 5px 5px ">
+        <span *ngFor="let label of visionLabels" class="vision-label">{{label}}</span>
       </div>
     </ion-card>
   </div>

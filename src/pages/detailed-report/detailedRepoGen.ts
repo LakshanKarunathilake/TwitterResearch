@@ -135,14 +135,17 @@ export class DetailedReport {
 
   // Generating values for the image Analysis Label
 
-  async getImageAnalysisData(doc_id: string) {
-    await this.subscription_doc
-      .collection("VisionAnalysis")
-      .doc(doc_id)
-      .valueChanges()
-      .subscribe(data => {
-        alert(JSON.stringify(data));
-      });
+  getImageAnalysisData(doc_id: string) {
+    return new Promise((res, rej) => {
+      this.subscription_doc
+        .collection("VisionAnalysis")
+        .doc(doc_id)
+        .valueChanges()
+        .subscribe(data => {
+          let dummy = JSON.parse(JSON.stringify(data));
+          res(dummy.labels);
+        });
+    });
   }
 
   presentLoading() {

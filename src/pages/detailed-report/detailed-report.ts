@@ -38,7 +38,11 @@ export class DetailedReportPage {
   shownGroup = null;
   desctiptionSentiment = null;
   replySentiment = null;
+  //For the Overall Chart
   barchartData = [];
+
+  //For Vision Visualization
+  visionLabels;
 
   emojiiToggle = true;
   emojiis = [];
@@ -62,14 +66,17 @@ export class DetailedReportPage {
   @ViewChild("BarCanvas")
   BarCanvas;
 
+  @ViewChild("SentimentCanvas")
+  SentimentCanvas;
+
   generateReport() {
     this.presentLoading();
     this.repo_gen.getTweets(this.user_data).then(data => {
       console.log("tweets", data);
       let array_of_tweets;
       array_of_tweets = JSON.parse(JSON.stringify(data));
+      console.log("Array of Tweets", array_of_tweets);
 
-      console.log("array of tweets", array_of_tweets);
       let x = 0;
       this.barchartData["datasets"] = [];
       this.barchartData["labels"] = [];
@@ -96,14 +103,7 @@ export class DetailedReportPage {
       this.barchartData["datasets"][2]["backgroundColor"] = [];
 
       for (let x = 0; x < array_of_tweets.length; x++) {
-        // this.barchartData['labels'][x]=[];
         this.barchartData["labels"][x] = "Tweet " + (x + 1);
-
-        // this.barchartData['datasets']=[];
-
-        // this.barchartData['datasets'][0]=[];
-        // this.barchartData['datasets'][1]=[];
-        // this.barchartData['datasets'][2]=[];
 
         this.barchartData["datasets"][0]["label"] = "Anger ";
         this.barchartData["datasets"][1]["label"] = "Fear ";
@@ -123,14 +123,6 @@ export class DetailedReportPage {
           x
         ] = backgroundColorBlue;
 
-        // this.barchartData['datasets'][0]=[];
-        // this.barchartData['datasets'][1]=[];
-        // this.barchartData['datasets'][2]=[];
-
-        // this.barchartData['datasets'][0]['data']=[];
-        // this.barchartData['datasets'][1]['data']=[];
-        // this.barchartData['datasets'][2]['data']=[];
-
         this.barchartData["datasets"][0]["data"][x] = [];
 
         this.barchartData["datasets"][0]["data"][x] =
@@ -140,8 +132,6 @@ export class DetailedReportPage {
         this.barchartData["datasets"][2]["data"][x] =
           array_of_tweets[x].sentiment.Joy;
       }
-
-      console.log("bar chart data", this.barchartData);
 
       this.drawBarChart(this.barchartData);
 
@@ -166,8 +156,6 @@ export class DetailedReportPage {
 
         return val;
       });
-
-      //console.log(this.tweets_observable);
     });
     this.hideLoading();
   }
@@ -205,12 +193,12 @@ export class DetailedReportPage {
     return this.desctiptionSentiment === group;
   }
 
-  toggleReplySentiment(group, tweet) {
+  toggleReplySentiment(group2, tweet) {
     if (tweet.reply_sentiment != undefined) {
-      if (this.isTweetSentimentShown(group)) {
+      if (this.isTweetSentimentShown(group2)) {
         this.replySentiment = null;
       } else {
-        this.replySentiment = group;
+        this.replySentiment = group2;
       }
     } else {
       this.alertCtrl
@@ -223,8 +211,8 @@ export class DetailedReportPage {
     }
   }
 
-  isReplySentimentShown(group) {
-    return this.replySentiment === group;
+  isReplySentimentShown(group2) {
+    return this.replySentiment === group2;
   }
 
   sentimentAnalysisToggle() {
@@ -237,41 +225,18 @@ export class DetailedReportPage {
 
   viewVisionLabels(doc_id: string) {
     this.presentLoading();
-    this.repo_gen.getImageAnalysisData(doc_id).then(() => {
+    this.repo_gen.getImageAnalysisData(doc_id).then(response => {
+      // this.visionLabels = response;
+      let res_array = JSON.parse(JSON.stringify(response));
+      console.log(res_array);
       this.hideLoading();
+      const alert = this.alertCtrl.create({
+        title: "Vision Analyzed Labels",
+        subTitle: res_array,
+        buttons: ["OK"]
+      });
+      alert.present();
     });
-  }
-
-  showEmojii(score: number, type) {
-    console.log("score is" + score);
-    console.log("type is " + type);
-
-    this.emojiis = [];
-
-    if (this.emojiiToggle == true) {
-      this.emojiiToggle = false;
-    } else {
-      this.emojiiToggle = true;
-    }
-
-    // let number_of_emojiss = 2 * Math.round((score * 10) / 2);
-    // console.log("After Rounding", number_of_emojiss);
-
-    // for (let index = 0; index < number_of_emojiss; index++) {
-    //   switch (type) {
-    //     case "Anger":
-    //       this.emojiis.push("😡");
-    //       break;
-    //     case "Joy":
-    //       this.emojiis.push("😊");
-    //       break;
-    //     case "Fear":
-    //       this.emojiis.push("😨");
-    //       break;
-    //     default:
-    //       break;
-    //   }
-    // }
   }
 
   presentLoading() {
@@ -286,7 +251,7 @@ export class DetailedReportPage {
   }
 
   drawBarChart(data) {
-    var stackedBar = new Chart(this.BarCanvas.nativeElement, {
+    new Chart(this.BarCanvas.nativeElement, {
       type: "bar",
       data: data,
       options: {
