@@ -224,21 +224,28 @@ export class DetailedReportPage {
 
   viewVisionLabels(doc_id: string) {
     this.presentLoading();
-    let isEmpty = true;
+    
     this.repo_gen.getImageAnalysisData(doc_id).then(response => {
-      let res_array = JSON.parse(JSON.stringify(response));
       this.hideLoading();
-      isEmpty = false;
-      const alert = this.alertCtrl.create({
-        title: "The images conatains",
-        subTitle: res_array.map(icon => {
-          return `<i>${icon}</i>`;
-        }),
-        buttons: ["OK"]
-      });
-      alert.present();
+      if (response === undefined) {
+        const alert = this.alertCtrl.create({
+          title: "No Images",
+          message: "Sorry This Tweet does not contain any imagaries",
+          buttons: ["OK"]
+        });
+        alert.present();
+      } else {
+        let res_array = JSON.parse(JSON.stringify(response));
+        const alert = this.alertCtrl.create({
+          title: "The images conatains",
+          subTitle: res_array.map(icon => {
+            return `<i>${icon}</i>`;
+          }),
+          buttons: ["OK"]
+        });
+        alert.present();
+      }
     });
-    if (isEmpty) this.hideLoading();
   }
 
   chartView(i) {

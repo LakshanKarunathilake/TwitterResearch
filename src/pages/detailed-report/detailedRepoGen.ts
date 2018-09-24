@@ -142,9 +142,14 @@ export class DetailedReport {
         .doc(doc_id)
         .valueChanges()
         .subscribe(data => {
-          let dummy = JSON.parse(JSON.stringify(data));
-          console.log("Dummy ", dummy);
-          res(dummy.labels);
+          let dummy;
+          if (data == !undefined) {
+            dummy = JSON.parse(JSON.stringify(data));
+            console.log("Dummy ", dummy);
+            res(dummy.labels);
+          } else {
+            res(undefined);
+          }
         });
     });
   }

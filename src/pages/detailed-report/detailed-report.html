@@ -43,7 +43,7 @@
       <p padding *ngIf="isGroupShown(i)">{{tweet.description}}</p>
       <!-- Tweet Description Sentiment Button -->
       <div class="sentiment-btn" align="center">
-        <button ion-button bloxk outline color="primary" (click)="toggleTweetSentiment(i,tweet)">Description
+        <button ion-button block outline color="primary" (click)="toggleTweetSentiment(i,tweet)">Description
           Sentiment</button>
       </div>
       <div *ngIf="isTweetSentimentShown(i)" style="padding-top: 5%; padding-bottom: 5%">
