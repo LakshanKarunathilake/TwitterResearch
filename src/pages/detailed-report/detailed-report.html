@@ -43,7 +43,8 @@
       <p padding *ngIf="isGroupShown(i)">{{tweet.description}}</p>
       <!-- Tweet Description Sentiment Button -->
       <div class="sentiment-btn" align="center">
-        <button ion-button outline color="primary" (click)="toggleTweetSentiment(i,tweet)">Tweet Description Sentiment</button>
+        <button ion-button bloxk outline color="primary" (click)="toggleTweetSentiment(i,tweet)">Description
+          Sentiment</button>
       </div>
       <div *ngIf="isTweetSentimentShown(i)" style="padding-top: 5%; padding-bottom: 5%">
         <ion-row>
@@ -88,7 +89,7 @@
 
       </div>
       <div class="sentiment-btn" align="center" style="padding-bottom: 5px;">
-        <button padding ion-button outline color="primary" (click)="toggleReplySentiment(i,tweet)">Tweet Reply
+        <button padding ion-button block outline color="primary" (click)="toggleReplySentiment(i,tweet)">Reply
           Sentiment</button>
       </div>
 
@@ -130,20 +131,17 @@
       <div>
         <ion-row>
           <ion-col col-6>
-            <button ion-button outline style="text-align: center" color="primary">
+            <button ion-button block outline style="text-align: center" color="primary" (click)="chartView(i)">
               <ion-icon name="color-palette" style="padding-right: 5px;"></ion-icon>Graph
             </button>
           </ion-col>
           <ion-col col-6>
-            <button ion-button outline style="text-align: center" color="primary" (click)="viewVisionLabels(tweet.doc_id)">
+            <button ion-button block outline style="text-align: center" color="primary" (click)="viewVisionLabels(tweet.doc_id)">
               <ion-icon name="eye" style="padding-right: 5px;"></ion-icon>Vision
             </button>
           </ion-col>
 
         </ion-row>
-      </div>
-      <div style="margin: 5px 5px 5px 5px ">
-        <span *ngFor="let label of visionLabels" class="vision-label">{{label}}</span>
       </div>
     </ion-card>
   </div>

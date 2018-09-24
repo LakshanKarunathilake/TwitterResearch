@@ -7,7 +7,8 @@ import {
   NavParams,
   AlertController,
   Loading,
-  LoadingController
+  LoadingController,
+  ModalController
 } from "ionic-angular";
 import { DetailedReport } from "./detailedRepoGen";
 import { AngularFirestore } from "angularfire2/firestore";
@@ -44,9 +45,6 @@ export class DetailedReportPage {
   //For Vision Visualization
   visionLabels;
 
-  emojiiToggle = true;
-  emojiis = [];
-
   sentimentAnalysisClicked = false;
 
   loading: Loading;
@@ -56,7 +54,8 @@ export class DetailedReportPage {
     public navParams: NavParams,
     private afs: AngularFirestore,
     private alertCtrl: AlertController,
-    private loadingCtrl: LoadingController
+    private loadingCtrl: LoadingController,
+    private modalCtrl: ModalController
   ) {
     this.user_data = navParams.data;
 
@@ -225,18 +224,46 @@ export class DetailedReportPage {
 
   viewVisionLabels(doc_id: string) {
     this.presentLoading();
+    let isEmpty = true;
     this.repo_gen.getImageAnalysisData(doc_id).then(response => {
-      // this.visionLabels = response;
       let res_array = JSON.parse(JSON.stringify(response));
-      console.log(res_array);
       this.hideLoading();
+      isEmpty = false;
       const alert = this.alertCtrl.create({
-        title: "Vision Analyzed Labels",
-        subTitle: res_array,
+        title: "The images conatains",
+        subTitle: res_array.map(icon => {
+          return `<i>${icon}</i>`;
+        }),
         buttons: ["OK"]
       });
       alert.present();
     });
+    if (isEmpty) this.hideLoading();
+  }
+
+  chartView(i) {
+    console.log("click");
+    let tweet_sentiment;
+    let reply_sentiment;
+    // this.tweets_observable.subscribe(data => {
+    //   tweet_sentiment = data[i].sentiment;
+    //   reply_sentiment = data[i].reply_sentiment;
+    //   const myModal = this.modalCtrl.create("ChartViewPage", {
+    //     tweet: tweet_sentiment,
+    //     reply: reply_sentiment
+    //   });
+    //   myModal.present();
+    // });
+
+    tweet_sentiment = this.tweets_observable[i].sentiment;
+    reply_sentiment = this.tweets_observable[i].reply_sentiment;
+    console.log("tweet_sentimet", tweet_sentiment);
+    console.log("reply_sentimet", reply_sentiment);
+    const myModal = this.modalCtrl.create("ChartViewPage", {
+      tweet: tweet_sentiment,
+      reply: reply_sentiment
+    });
+    myModal.present();
   }
 
   presentLoading() {

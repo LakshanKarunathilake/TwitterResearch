@@ -143,6 +143,7 @@ export class DetailedReport {
         .valueChanges()
         .subscribe(data => {
           let dummy = JSON.parse(JSON.stringify(data));
+          console.log("Dummy ", dummy);
           res(dummy.labels);
         });
     });
