@@ -143,7 +143,7 @@ export class DetailedReport {
         .valueChanges()
         .subscribe(data => {
           let dummy;
-          if (data == !undefined) {
+          if (data != undefined) {
             dummy = JSON.parse(JSON.stringify(data));
             console.log("Dummy ", dummy);
             res(dummy.labels);

@@ -224,9 +224,10 @@ export class DetailedReportPage {
 
   viewVisionLabels(doc_id: string) {
     this.presentLoading();
-    
+
     this.repo_gen.getImageAnalysisData(doc_id).then(response => {
       this.hideLoading();
+      console.log("Response ", response);
       if (response === undefined) {
         const alert = this.alertCtrl.create({
           title: "No Images",
