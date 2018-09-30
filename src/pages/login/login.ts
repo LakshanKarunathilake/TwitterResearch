@@ -85,7 +85,7 @@ export class LoginPage {
     // this.navCtrl.setRoot("MainMenuPage",this.user).then(()=>{
     this.navCtrl.setRoot("MainMenuPage").then(() => {
       this.hideLoading();
-      localStorage.setItem("api_call", "https://slitt-research.appspot.com");
+      localStorage.setItem("api_call", "https://slitt-research-final.appspot.com");
     });
   }
 
