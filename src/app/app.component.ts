@@ -3,8 +3,6 @@ import { Platform } from "ionic-angular";
 import { StatusBar } from "@ionic-native/status-bar";
 import { SplashScreen } from "@ionic-native/splash-screen";
 
-import { timer } from "rxjs/observable/timer";
-
 @Component({
   templateUrl: "app.html"
 })

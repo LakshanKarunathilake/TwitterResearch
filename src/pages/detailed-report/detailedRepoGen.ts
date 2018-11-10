@@ -49,23 +49,25 @@ export class DetailedReport {
                     ts.description = element.payload.doc.data().full_text;
                     ts.doc_id = element2.payload.doc.id;
 
-                    sentiment.Anger = element2.payload.doc.data().emotion.Anger;
-                    sentiment.Fear = element2.payload.doc.data().emotion.Fear;
-                    sentiment.Joy = element2.payload.doc.data().emotion.Joy;
-                    sentiment.sentiment = element2.payload.doc.data().sentiment;
+                    if (element2.payload.doc.data().emotion != undefined) {
+                      sentiment.Anger = element2.payload.doc.data().emotion.Anger;
+                      sentiment.Fear = element2.payload.doc.data().emotion.Fear;
+                      sentiment.Joy = element2.payload.doc.data().emotion.Joy;
+                      sentiment.sentiment = element2.payload.doc.data().sentiment;
 
-                    sentiment.sentiment =
-                      Math.round(sentiment.sentiment * 100) / 100;
-                    sentiment.Anger = Math.round(sentiment.Anger * 100) / 100;
-                    sentiment.Fear = Math.round(sentiment.Fear * 100) / 100;
-                    sentiment.Joy = Math.round(sentiment.Joy * 100) / 100;
+                      sentiment.sentiment =
+                        Math.round(sentiment.sentiment * 100) / 100;
+                      sentiment.Anger = Math.round(sentiment.Anger * 100) / 100;
+                      sentiment.Fear = Math.round(sentiment.Fear * 100) / 100;
+                      sentiment.Joy = Math.round(sentiment.Joy * 100) / 100;
 
-                    ts.sentiment = sentiment;
-                    ts.reply_sentiment = element2.payload.doc.data().AVGS;
-                    console.log(
-                      "ading emotions to the array called tweet_sentiment"
-                    );
-                    twitter_sentiment.push(ts);
+                      ts.sentiment = sentiment;
+                      ts.reply_sentiment = element2.payload.doc.data().AVGS;
+                      console.log(
+                        "ading emotions to the array called tweet_sentiment"
+                      );
+                      twitter_sentiment.push(ts);
+                    }
                   }
                 });
               });
