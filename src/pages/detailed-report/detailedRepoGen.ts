@@ -93,10 +93,12 @@ export class DetailedReport {
             let average_fear: number = 0;
 
             val.forEach(reply => {
-              average_sentiment += +reply.sentiment;
-              average_anger += +reply.emotion.Anger;
-              average_joy += +reply.emotion.Joy;
-              average_fear += +reply.emotion.Fear;
+              if (reply != undefined && reply.emotion != undefined) {
+                average_sentiment += +reply.sentiment;
+                average_anger += +reply.emotion.Anger;
+                average_joy += +reply.emotion.Joy;
+                average_fear += +reply.emotion.Fear;
+              }
             });
 
             //Averaging sentiment values of replies

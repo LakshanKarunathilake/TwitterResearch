@@ -43,26 +43,30 @@ export class AnalysisToDB {
 
   async getSentiment(data) {
     let watson_api = this.url + "/get_sentiment/getSentiment";
-    await this.http.post(watson_api, { text: data.text }).subscribe(a => {
-      if (data.isTweet) {
-        this.saveTweetSentiment({
-          doc: data.doc,
-          description_sentiment: a,
-          tweet_id: data.tweet_id,
-          screen_name: data.screen_name,
-          collection: data.collection,
-          id_str: data.id_str,
-          subscription_id: data.subscription_id
-        });
-      } else {
-        this.saveReplySentiment({
-          doc: data.doc,
-          descripiton_sentiment: a,
-          collection: data.collection,
-          tweet_id: data.tweet_id
-        });
-      }
-    });
+    try {
+      await this.http.post(watson_api, { text: data.text }).subscribe(a => {
+        if (data.isTweet) {
+          this.saveTweetSentiment({
+            doc: data.doc,
+            description_sentiment: a,
+            tweet_id: data.tweet_id,
+            screen_name: data.screen_name,
+            collection: data.collection,
+            id_str: data.id_str,
+            subscription_id: data.subscription_id
+          });
+        } else {
+          this.saveReplySentiment({
+            doc: data.doc,
+            descripiton_sentiment: a,
+            collection: data.collection,
+            tweet_id: data.tweet_id
+          });
+        }
+      });
+    } catch (error) {
+      console.log("Error Caught");
+    }
   }
 
   saveTweetSentiment(data) {
